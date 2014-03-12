@@ -6,7 +6,7 @@
 package PksZadanie.equip;
 
 
-import PksZadanie.AnalyserPanel;
+import PksZadanie.AnalyserMainCheck;
 import java.util.ArrayList;
 
 /**
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class AnalyserDataUpdater {
 
     public Frame frame;
-    public AnalyserPanel dataFrame;
+    public AnalyserMainCheck dataFrame;
 
-    public AnalyserDataUpdater(Frame frame, AnalyserPanel dataPanel) {
+    public AnalyserDataUpdater(Frame frame, AnalyserMainCheck dataPanel) {
         this.frame = frame;
         this.dataFrame = dataPanel;
 

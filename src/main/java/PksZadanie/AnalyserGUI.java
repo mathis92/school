@@ -106,7 +106,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
             System.out.println("You chose to open this directory: "
                     + chooser.getSelectedFile().getAbsolutePath());
             pcapFile = chooser.getSelectedFile();
-            AnalyserPanel panel = new AnalyserPanel(pcapFile, this);
+            AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
             jTabbedPane3.addTab(pcapFile.getName(), panel);
 
         }

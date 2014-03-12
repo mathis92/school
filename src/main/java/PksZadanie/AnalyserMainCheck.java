@@ -17,12 +17,12 @@ import pkszadanie.analysers.Analyser;
  *
  * @author Mathis
  */
-public class AnalyserPanel extends javax.swing.JPanel {
+public class AnalyserMainCheck extends javax.swing.JPanel {
 
     public AnalyserGUI gui;
     public Analyser an;
 
-    public AnalyserPanel(File pcapFile, AnalyserGUI gui) {
+    public AnalyserMainCheck(File pcapFile, AnalyserGUI gui) {
         this.gui = gui;
         initComponents();
         an = new Analyser(this, pcapFile);

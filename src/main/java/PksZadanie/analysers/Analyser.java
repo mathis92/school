@@ -11,7 +11,7 @@ import java.io.IOException;
 import org.krakenapps.pcap.PcapInputStream;
 import org.krakenapps.pcap.file.PcapFileInputStream;
 import org.krakenapps.pcap.packet.PcapPacket;
-import PksZadanie.AnalyserPanel;
+import PksZadanie.AnalyserMainCheck;
 import PksZadanie.equip.Frame;
 import PksZadanie.equip.FrameType;
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ import org.krakenapps.pcap.util.Buffer;
 
 public class Analyser {
 
-    public AnalyserPanel panel;
+    public AnalyserMainCheck panel;
     public File pcap;
     public Integer i = 0;
     public ArrayList<Frame> frameList;
     public ArrayList<Frame> mostBytesList = new ArrayList<Frame>();
 
-    public Analyser(AnalyserPanel aPanel, File pcapFile) {
+    public Analyser(AnalyserMainCheck aPanel, File pcapFile) {
         this.panel = aPanel;
         this.pcap = pcapFile;
     }
