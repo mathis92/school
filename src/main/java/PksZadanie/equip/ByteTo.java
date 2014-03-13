@@ -5,25 +5,46 @@
  */
 package PksZadanie.equip;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author Mathis
  */
 public class ByteTo {
 
-  //  public byte[] byteArray;
-  //  public byte singleByte;
+    //  public byte[] byteArray;
+    //  public byte singleByte;
+    /*
+     public ByteTo(byte[] byteArray) {
+     this.byteArray = byteArray;
   
-/*
-    public ByteTo(byte[] byteArray) {
-        this.byteArray = byteArray;
-  
+     }
+
+     public ByteTo(byte singleByte) {
+     this.singleByte = singleByte;
+     }
+     */
+    public static String UnitConverter(double size) {
+
+        String output;
+        
+        DecimalFormat temp1 = new DecimalFormat("#,#0.0");
+        double temp = size;
+        String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int i = 0;
+        while (temp > 1) {
+            i++;
+            temp = temp / (1024);
+            System.out.println(temp);
+        }
+        temp = temp * 1024;
+        double out = new Double(temp1.format(temp)).doubleValue();
+        output = out + " " + units[i - 1];// + "( " + out2 + " B )";
+
+        return output;
     }
 
-    public ByteTo(byte singleByte) {
-        this.singleByte = singleByte;
-    }
-*/
     public static Integer singleToInt(byte singleByte) {
         Integer result = 0;
         result = (singleByte & 0xff);

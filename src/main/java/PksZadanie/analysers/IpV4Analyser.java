@@ -72,7 +72,9 @@ public class IpV4Analyser extends AbstractAnalyser implements IAnalyser {
         return ipV4;
     }
 
-    
+    public void setIpV4(Integer ipV4) {
+        this.ipV4 = ipV4;
+    } 
     
     public String getSourceIP() {
         return sourceIP;

@@ -46,7 +46,7 @@ public final class Frame {
         etherTypeInt =ByteTo.toInt(etherType);
       //  System.out.println(etherTypeInt);
 
-        if (etherTypeInt >= 1534) {
+        if (etherTypeInt >= 1536) {
             frameType = "Ethernet II";
             if (etherTypeInt == 2048) {
                 isIpV4 = true;
