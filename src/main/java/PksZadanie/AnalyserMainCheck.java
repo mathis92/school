@@ -8,7 +8,6 @@ package PksZadanie;
 import PksZadanie.equip.AnalyserDataUpdater;
 import PksZadanie.equip.Frame;
 import java.io.File;
-import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import pkszadanie.analysers.Analyser;
@@ -25,7 +24,7 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
     public AnalyserMainCheck(File pcapFile, AnalyserGUI gui) {
         this.gui = gui;
         initComponents();
-        an = new Analyser(this, pcapFile);
+        an = new Analyser(this, pcapFile, gui);
         an.analyzeFile();
         jOppenedFile.setText(pcapFile.getAbsolutePath());
     }
@@ -136,10 +135,16 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
         jDialog1.setSize(800, 600);
         jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (jTable1.getSelectedRow()+1) );
         AnalyserDataUpdater dataSetter = new AnalyserDataUpdater((Frame) an.getFrameList().get(jTable1.getSelectedRow()),this);
-        dataSetter.doIt();
+        dataSetter.update();
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
+    public Analyser getAn() {
+        return an;
+    }
+
+    
+    
     public JTable getjTable1() {
         return jTable1;
     }

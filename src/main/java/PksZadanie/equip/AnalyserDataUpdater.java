@@ -30,7 +30,7 @@ public class AnalyserDataUpdater {
         return dataByte.toString();
     }
 
-    public void doIt() {
+    public void update() {
         ArrayList stringList = new ArrayList();
         String data = new String();
         frame.getBuffer().rewind();

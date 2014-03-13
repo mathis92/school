@@ -18,21 +18,28 @@ public class IpV4Analyser extends AbstractAnalyser implements IAnalyser {
     private String sourceIP;
     private String destinationIP;
     private final byte[] destinationIPbyte = new byte[4];
-
+    private Integer ipV4;
+    
     public IpV4Analyser(Buffer buffer) {
         super(buffer);
     }
 
     @Override
     public void analyse() {
-        buffer.skip(12);
+        buffer.skip(2);
+        byte[] ipv4Length = new byte[2];
+        ipv4Length[0] = buffer.get();
+        ipv4Length[1] = buffer.get();
+        ipV4 = ByteTo.toInt(ipv4Length);
+        
+        buffer.skip(8);
         for (int i = 0; i < 4; i++) {
             sourceIPbyte[i] = buffer.get();
-            ByteTo newInt = new ByteTo(sourceIPbyte[i]);
+           // ByteTo newInt = new ByteTo(sourceIPbyte[i]);
             if (i == 0) {
-                sourceIP = newInt.singleToInt().toString();
+                sourceIP = ByteTo.singleToInt(sourceIPbyte[i]).toString();
             } else {
-                sourceIP += newInt.singleToInt().toString();
+                sourceIP += ByteTo.singleToInt(sourceIPbyte[i]).toString();
 
             }
             if (i < 3) {
@@ -41,14 +48,14 @@ public class IpV4Analyser extends AbstractAnalyser implements IAnalyser {
                 sourceIP += "\n";
             }
         }
-        System.out.println("sourceee IP " + sourceIP);
+    //    System.out.println("sourceee IP " + sourceIP);
         for (int i = 0; i < 4; i++) {
             destinationIPbyte[i] = buffer.get();
-            ByteTo newInt = new ByteTo(destinationIPbyte[i]);
+           // ByteTo newInt = new ByteTo(destinationIPbyte[i]);
             if (i == 0) {
-                destinationIP = newInt.singleToInt().toString();
+                destinationIP = ByteTo.singleToInt(destinationIPbyte[i]).toString();
             } else {
-                destinationIP += newInt.singleToInt().toString();
+                destinationIP += ByteTo.singleToInt(destinationIPbyte[i]).toString();
 
             }
             if (i < 3) {
@@ -57,10 +64,16 @@ public class IpV4Analyser extends AbstractAnalyser implements IAnalyser {
                 destinationIP += "\n";
             }
         }
-        System.out.println("destination IP " + destinationIP);
+    //    System.out.println("destination IP " + destinationIP);
 
     }
 
+    public Integer getiPv4length() {
+        return ipV4;
+    }
+
+    
+    
     public String getSourceIP() {
         return sourceIP;
     }

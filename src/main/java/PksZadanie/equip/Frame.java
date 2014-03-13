@@ -26,6 +26,8 @@ public final class Frame {
     private final PcapPacket packet;
     public Buffer buffer;
     public byte[] etherType;
+    private boolean isIpV4;
+    public IpV4Analyser ipv4;
 
     public Frame(int id, PcapPacket packet) {
         this.id = id;
@@ -41,15 +43,16 @@ public final class Frame {
     public void findEtherType() {
         Integer etherTypeInt;
         etherType = new byte[]{buffer.get(), buffer.get()};
-        etherTypeInt =(Integer) new ByteTo(etherType).toInt();
-        System.out.println(etherTypeInt);
+        etherTypeInt =ByteTo.toInt(etherType);
+      //  System.out.println(etherTypeInt);
 
         if (etherTypeInt >= 1534) {
             frameType = "Ethernet II";
             if (etherTypeInt == 2048) {
-                IpV4Analyser Ipv4 = new IpV4Analyser(buffer);
-                Ipv4.analyse();
-                System.out.println("je to IpV4");
+                isIpV4 = true;
+                ipv4 = new IpV4Analyser(buffer);
+                ipv4.analyse();
+        //        System.out.println("je to IpV4");
             }
 
         }
@@ -64,31 +67,26 @@ public final class Frame {
                     frameType = "IEEE 802.2 SNAP";
                 }
             } else {
-                System.out.print(temp);
-                System.out.print(buffer.get());
+          //      System.out.print(temp);
+           //     System.out.print(buffer.get());
                 frameType = "IEEE 802.2 LLC";
             }
         }
     }
 
-    public static int toInt(byte[] bytes) {
-        Integer result = 0;
-        result = ((bytes[0] & 0xff) << 8) | ((bytes[1] & 0xff));
-        return result;
-    }
-
+ 
     public void findMacAdress(Integer type) {
         if (type == 1) {
             //zdrojova MAC adresa
 
             for (int i = 0; i < 6; i++) {
                 byte temp = buffer.get();
-                ByteTo macbyte = new ByteTo(temp);
+              // ByteTo macbyte = new ByteTo(temp);
                 sourceMACByte[i] = temp;
                 if (sourceMAC != null) {
-                    sourceMAC = sourceMAC + " " + macbyte.bToString();
+                    sourceMAC = sourceMAC + " " + ByteTo.bToString(temp);
                 } else {
-                    sourceMAC = macbyte.bToString();
+                    sourceMAC = ByteTo.bToString(temp);
                 }
             }
         }
@@ -96,17 +94,25 @@ public final class Frame {
             // destination MAC adress
             for (int i = 0; i < 6; i++) {
                 byte temp1 = buffer.get();
-                ByteTo macbyte1 = new ByteTo(temp1);
+         //       ByteTo macbyte1 = new ByteTo(temp1);
                 destinationMACByte[i] = temp1;
                 if (destinationMAC != null) {
-                    destinationMAC = destinationMAC + " " + macbyte1.bToString();
+                    destinationMAC = destinationMAC + " " + ByteTo.bToString(temp1);
                 } else {
-                    destinationMAC = macbyte1.bToString();
+                    destinationMAC = ByteTo.bToString(temp1);
                 }
             }
         }
     }
 
+    public boolean getIsIpv4(){
+        return isIpV4;
+    }
+    
+    public IpV4Analyser getIpv4analyser() {
+        return ipv4;
+    }
+    
     public Buffer getBuffer() {
         return buffer;
     }

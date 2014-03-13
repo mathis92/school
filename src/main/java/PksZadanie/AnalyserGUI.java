@@ -108,7 +108,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
             pcapFile = chooser.getSelectedFile();
             AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
             jTabbedPane3.addTab(pcapFile.getName(), panel);
-
+            jTabbedPane3.addTab("Scan Result", panel.getAn().getResult());
         }
     }//GEN-LAST:event_fileChooseActionPerformed
 

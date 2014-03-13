@@ -11,10 +11,10 @@ package PksZadanie.equip;
  */
 public class ByteTo {
 
-    public byte[] byteArray;
-    public byte singleByte;
+  //  public byte[] byteArray;
+  //  public byte singleByte;
   
-
+/*
     public ByteTo(byte[] byteArray) {
         this.byteArray = byteArray;
   
@@ -23,15 +23,15 @@ public class ByteTo {
     public ByteTo(byte singleByte) {
         this.singleByte = singleByte;
     }
-
-    public Integer singleToInt() {
+*/
+    public static Integer singleToInt(byte singleByte) {
         Integer result = 0;
         result = (singleByte & 0xff);
         return result;
 
     }
 
-    public Integer toInt() {
+    public static Integer toInt(byte[] byteArray) {
         Integer result = 0;
 
         for (int i = 0; i < byteArray.length - 1; i++) {
@@ -42,7 +42,7 @@ public class ByteTo {
 
     }
 
-    public String bToString() {
+    public static String bToString(byte singleByte) {
         StringBuilder newString = new StringBuilder();
         newString.append(String.format("%02X ", singleByte));
         return newString.toString();
