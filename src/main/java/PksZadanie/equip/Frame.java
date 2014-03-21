@@ -5,9 +5,12 @@
  */
 package PksZadanie.equip;
 
-import PksZadanie.analysers.IpV4Analyser;
+import PksZadanie.AnalyserArpParserPanel;
+import PksZadanie.analysers.ArpParser;
+import PksZadanie.analysers.IpV4Parser;
 import org.krakenapps.pcap.packet.PcapPacket;
 import org.krakenapps.pcap.util.Buffer;
+import pkszadanie.analysers.Analyser;
 
 /**
  *
@@ -27,14 +30,23 @@ public final class Frame {
     public Buffer buffer;
     public byte[] etherType;
     private boolean isIpV4;
-    public IpV4Analyser ipv4;
+    private boolean isARP;
+    public IpV4Parser ipv4;
+    public ArpParser arp;
+    public Analyser an;
 
-    public Frame(int id, PcapPacket packet) {
+    public Frame(int id, PcapPacket packet, Analyser an) {
         this.id = id;
         this.packet = packet;
-        frameLength = packet.getPacketHeader().getInclLen();
-        frameLengthWire = packet.getPacketHeader().getOrigLen();
+        if (packet.getPacketHeader().getOrigLen()+4 <= 64) {
+            frameLength = packet.getPacketHeader().getOrigLen();
+            frameLengthWire = 64;
+        } else {
+            frameLength = packet.getPacketHeader().getOrigLen();
+            frameLengthWire = packet.getPacketHeader().getOrigLen() + 4;
+        }
         buffer = packet.getPacketData();
+        this.an = an;
         this.findMacAdress(0);
         this.findMacAdress(1);
         this.findEtherType();
@@ -43,16 +55,22 @@ public final class Frame {
     public void findEtherType() {
         Integer etherTypeInt;
         etherType = new byte[]{buffer.get(), buffer.get()};
-        etherTypeInt =ByteTo.toInt(etherType);
-      //  System.out.println(etherTypeInt);
+        etherTypeInt = DataTypeHelper.toInt(etherType);
+        //  System.out.println(etherTypeInt);
 
         if (etherTypeInt >= 1536) {
             frameType = "Ethernet II";
             if (etherTypeInt == 2048) {
                 isIpV4 = true;
-                ipv4 = new IpV4Analyser(buffer);
+                ipv4 = new IpV4Parser(buffer);
                 ipv4.analyse();
-        //        System.out.println("je to IpV4");
+                //        System.out.println("je to IpV4");
+            }
+            if (etherTypeInt == 2054) {
+                isARP = true;
+                System.out.println("mam tu arp");
+                arp = new ArpParser(buffer);
+                arp.analyse();
             }
 
         }
@@ -67,26 +85,25 @@ public final class Frame {
                     frameType = "IEEE 802.2 SNAP";
                 }
             } else {
-          //      System.out.print(temp);
-           //     System.out.print(buffer.get());
+                //      System.out.print(temp);
+                //     System.out.print(buffer.get());
                 frameType = "IEEE 802.2 LLC";
             }
         }
     }
 
- 
     public void findMacAdress(Integer type) {
         if (type == 1) {
             //zdrojova MAC adresa
 
             for (int i = 0; i < 6; i++) {
                 byte temp = buffer.get();
-              // ByteTo macbyte = new ByteTo(temp);
+                // DataTypeHelper macbyte = new DataTypeHelper(temp);
                 sourceMACByte[i] = temp;
                 if (sourceMAC != null) {
-                    sourceMAC = sourceMAC + " " + ByteTo.bToString(temp);
+                    sourceMAC = sourceMAC + " " + DataTypeHelper.bToString(temp);
                 } else {
-                    sourceMAC = ByteTo.bToString(temp);
+                    sourceMAC = DataTypeHelper.bToString(temp);
                 }
             }
         }
@@ -94,25 +111,33 @@ public final class Frame {
             // destination MAC adress
             for (int i = 0; i < 6; i++) {
                 byte temp1 = buffer.get();
-         //       ByteTo macbyte1 = new ByteTo(temp1);
+                //       DataTypeHelper macbyte1 = new DataTypeHelper(temp1);
                 destinationMACByte[i] = temp1;
                 if (destinationMAC != null) {
-                    destinationMAC = destinationMAC + " " + ByteTo.bToString(temp1);
+                    destinationMAC = destinationMAC + " " + DataTypeHelper.bToString(temp1);
                 } else {
-                    destinationMAC = ByteTo.bToString(temp1);
+                    destinationMAC = DataTypeHelper.bToString(temp1);
                 }
             }
         }
     }
 
-    public boolean getIsIpv4(){
+    public boolean getIsArp() {
+        return isARP;
+    }
+
+    public ArpParser getArpParser() {
+        return arp;
+    }
+
+    public boolean getIsIpv4() {
         return isIpV4;
     }
-    
-    public IpV4Analyser getIpv4analyser() {
+
+    public IpV4Parser getIpv4parser() {
         return ipv4;
     }
-    
+
     public Buffer getBuffer() {
         return buffer;
     }

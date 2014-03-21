@@ -17,7 +17,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class AnalyserGUI extends javax.swing.JFrame {
 
+    private Integer arpTabExists = null;
+    private Integer icmpTabExists = null;
     private File pcapFile;
+    private JTabbedPane jTabbedPane4;
+    private JTabbedPane jTabbedPane5;
 
     public AnalyserGUI() {
         initComponents();
@@ -33,13 +37,13 @@ public class AnalyserGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChoose = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jTabbedPane3 = new javax.swing.JTabbedPane();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1300, 700));
+        setPreferredSize(new java.awt.Dimension(1300, 700));
 
         fileChoose.setText("Choose file");
         fileChoose.addActionListener(new java.awt.event.ActionListener() {
@@ -48,32 +52,27 @@ public class AnalyserGUI extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setText("RUN");
+        jLabel1.setText("Pcap file Analyser");
 
-        jLabel1.setText("SUPER VEC NAPARADU");
-
-        jLabel2.setText("Choose analyser");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabbedPane1.setVisible(false);
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(1260, 600));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(1260, 600));
+        jTabbedPane1.addTab("tab1", jTabbedPane3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fileChoose)
-                            .addComponent(jLabel2)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(286, 286, 286)
-                        .addComponent(jToggleButton1)))
-                .addGap(42, 42, 42))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fileChoose)
+                .addGap(418, 418, 418))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,18 +80,13 @@ public class AnalyserGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jToggleButton1))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileChoose)
-                        .addGap(0, 530, Short.MAX_VALUE))
-                    .addComponent(jTabbedPane3)))
+                    .addComponent(fileChoose))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -107,8 +101,29 @@ public class AnalyserGUI extends javax.swing.JFrame {
                     + chooser.getSelectedFile().getAbsolutePath());
             pcapFile = chooser.getSelectedFile();
             AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
+            jTabbedPane1.addTab("MainCheck", jTabbedPane3);
             jTabbedPane3.addTab(pcapFile.getName(), panel);
             jTabbedPane3.addTab("Scan Result", panel.getAn().getResult());
+            if (panel.getAn().getArpPanel() != null) {
+
+                if (arpTabExists == null) {
+                    jTabbedPane4 = new JTabbedPane();
+                    jTabbedPane1.addTab("ARP", jTabbedPane4);
+                    arpTabExists = 1;
+                }
+                jTabbedPane4.addTab(pcapFile.getName(), panel.getAn().getArpPanel());
+            }
+         
+            if(panel.getAn().getIcmpPanel() != null){
+                if(icmpTabExists == null){
+                    jTabbedPane5 = new JTabbedPane();
+                    jTabbedPane1.addTab("ICMP", jTabbedPane5);
+                    icmpTabExists = 1;
+                }
+                jTabbedPane5.addTab(pcapFile.getName(), panel.getAn().getIcmpPanel());
+            }
+            jTabbedPane1.setVisible(true);
+
         }
     }//GEN-LAST:event_fileChooseActionPerformed
 
@@ -135,13 +150,15 @@ public class AnalyserGUI extends javax.swing.JFrame {
         return jTabbedPane3;
     }
 
+    public JTabbedPane getjTabbedPane1() {
+        return jTabbedPane1;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton fileChoose;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

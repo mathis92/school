@@ -5,7 +5,8 @@
  */
 package PksZadanie.equip;
 
-
+import PksZadanie.AnalyserArpParserPanel;
+import PksZadanie.AnalyserIcmpParserPanel;
 import PksZadanie.AnalyserMainCheck;
 import java.util.ArrayList;
 
@@ -13,12 +14,12 @@ import java.util.ArrayList;
  *
  * @author Mathis
  */
-public class AnalyserDataUpdater {
+public class IcmpParserDataUpdater {
 
     public Frame frame;
-    public AnalyserMainCheck dataFrame;
+    public AnalyserIcmpParserPanel dataFrame;
 
-    public AnalyserDataUpdater(Frame frame, AnalyserMainCheck dataPanel) {
+    public IcmpParserDataUpdater(Frame frame, AnalyserIcmpParserPanel dataPanel) {
         this.frame = frame;
         this.dataFrame = dataPanel;
 
@@ -35,13 +36,13 @@ public class AnalyserDataUpdater {
         String data = new String();
         frame.getBuffer().rewind();
 
-        for (int i = 0; i < frame.getFrameLength(); i++) {
+        while(frame.getBuffer().isEOB() != true){
             stringList.add(makeString(frame.getBuffer().get()));
 
         }
-        for (int i = 1; i < stringList.size()+1; i++) {
+        for (int i = 1; i < stringList.size() + 1; i++) {
 
-            data += stringList.get(i-1).toString();
+            data += stringList.get(i - 1).toString();
 
             if (i % 8 == 0) {
                 data += " ";
@@ -53,5 +54,4 @@ public class AnalyserDataUpdater {
         dataFrame.getjDataText().setText(data);
 
     }
-
 }
