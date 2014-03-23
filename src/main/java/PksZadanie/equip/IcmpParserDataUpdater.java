@@ -8,6 +8,7 @@ package PksZadanie.equip;
 import PksZadanie.AnalyserArpParserPanel;
 import PksZadanie.AnalyserIcmpParserPanel;
 import PksZadanie.AnalyserMainCheck;
+import PksZadanie.AnalyserUdpParserPanel;
 import java.util.ArrayList;
 
 /**
@@ -18,10 +19,17 @@ public class IcmpParserDataUpdater {
 
     public Frame frame;
     public AnalyserIcmpParserPanel dataFrame;
+    public AnalyserUdpParserPanel dataFrameUdp;
 
     public IcmpParserDataUpdater(Frame frame, AnalyserIcmpParserPanel dataPanel) {
         this.frame = frame;
         this.dataFrame = dataPanel;
+
+    }
+
+    public IcmpParserDataUpdater(Frame frame, AnalyserUdpParserPanel dataPanel) {
+        this.frame = frame;
+        this.dataFrameUdp = dataPanel;
 
     }
 
@@ -36,7 +44,7 @@ public class IcmpParserDataUpdater {
         String data = new String();
         frame.getBuffer().rewind();
 
-        while(frame.getBuffer().isEOB() != true){
+        while (frame.getBuffer().isEOB() != true) {
             stringList.add(makeString(frame.getBuffer().get()));
 
         }

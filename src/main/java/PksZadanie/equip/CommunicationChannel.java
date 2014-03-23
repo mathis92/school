@@ -14,6 +14,8 @@ public class CommunicationChannel {
     private final byte[] sourceMacAdress;
     private final byte[] destinationMacAdress;
     private final ArrayList<Frame> tcpCommList;
+    private Integer sourcePort = null;
+    private Integer destinationPort = null;
     Frame frame;
     private Integer completed = 0;
     private Integer commId;
@@ -25,6 +27,8 @@ public class CommunicationChannel {
         DestinationIpAdress = frame.getIpv4parser().getDestinationIPbyte();
         sourceMacAdress = frame.getSourceMACByte();
         destinationMacAdress = frame.getDestinationMACByte();
+        sourcePort = DataTypeHelper.toInt(frame.getIpv4parser().getTcpParser().getSourcePortByte());
+        destinationPort = DataTypeHelper.toInt(frame.getIpv4parser().getTcpParser().getDestinationPortByte());
         tcpCommList.add(frame);
     }
 
@@ -35,7 +39,6 @@ public class CommunicationChannel {
             for (String flag : DataTypeHelper.getTcpPortFlags(temp)) {
                 if (flag.equalsIgnoreCase("FIN")) {
                     fin++;
-                    System.out.println("nasiel som fin");
                 } else if (flag.equalsIgnoreCase("RST")) {
                     rst++;
                 }
@@ -72,6 +75,14 @@ public class CommunicationChannel {
 
     public ArrayList<Frame> getTcpCommList() {
         return tcpCommList;
+    }
+
+    public Integer getDestinationPort() {
+        return destinationPort;
+    }
+
+    public Integer getSourcePort() {
+        return sourcePort;
     }
 
     public Integer getCompleted() {

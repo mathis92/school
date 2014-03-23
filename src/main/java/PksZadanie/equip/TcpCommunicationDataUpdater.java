@@ -41,8 +41,7 @@ public class TcpCommunicationDataUpdater {
             sizesFrames.add(0);
         }
 
-        System.out.println(sizes);
-        for (Frame temp : dataFrame.getAn().getComList().get(frame.getComId()).getTcpCommList()) {
+        for (Frame temp : dataFrame.getComm().getComList().get(frame.getComId()).getTcpCommList()) {
             Integer i = 0;
             i++;
             DefaultTableModel tableModel = (DefaultTableModel) dataFrame.getjTable2().getModel();
@@ -51,8 +50,8 @@ public class TcpCommunicationDataUpdater {
             data[1] = temp.getId();
             data[2] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getSourceIPbyte());
             data[3] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getDestinationIPbyte());
-            data[4] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePort());
-            data[5] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPort());
+            data[4] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
+            data[5] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
             data[6] = DataTypeHelper.getTcpPortFlags(temp);
             data[7] = DataTypeHelper.macAdressConvertor(temp.getSourceMACByte());
             data[8] = DataTypeHelper.macAdressConvertor(temp.getDestinationMACByte());

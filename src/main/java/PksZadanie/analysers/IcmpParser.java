@@ -32,7 +32,6 @@ public class IcmpParser extends AbstractAnalyser implements IAnalyser {
     
        type = buffer.get();
        code = buffer.get();
-        System.out.println(DataTypeHelper.bToString(type));
        checksum[0] = buffer.get();
        checksum[1] = buffer.get();
     }

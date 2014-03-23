@@ -46,8 +46,6 @@ public class UdpParser extends AbstractAnalyser implements IAnalyser {
         return isUdp;
     }
 
-
-
     public byte[] getSourcePort() {
         return sourcePort;
     }

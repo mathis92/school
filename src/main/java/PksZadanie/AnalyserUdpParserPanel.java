@@ -5,29 +5,29 @@
  */
 package PksZadanie;
 
-import PksZadanie.equip.MainCheckDataUpdater;
-import PksZadanie.equip.Frame;
-import java.io.File;
-import java.io.FileNotFoundException;
+import PksZadanie.equip.IcmpParserDataUpdater;
+import PksZadanie.equip.UdpCommunication;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 import pkszadanie.analysers.Analyser;
 
 /**
  *
  * @author Mathis
  */
-public class AnalyserMainCheck extends javax.swing.JPanel {
+public class AnalyserUdpParserPanel extends javax.swing.JPanel {
 
-    public AnalyserGUI gui;
-    public Analyser an;
+    /**
+     * Creates new form AnalyserUdpParserPanel
+     */
+    Analyser an;
+    UdpCommunication comm;
 
-    public AnalyserMainCheck(File pcapFile, AnalyserGUI gui) throws FileNotFoundException {
-        this.gui = gui;
+    public AnalyserUdpParserPanel(Analyser an, UdpCommunication communication) {
+this.comm = communication;
+        this.an = an;
         initComponents();
-        an = new Analyser(this, pcapFile, gui);
-        an.analyzeFile();
-        jOppenedFile.setText(pcapFile.getAbsolutePath());
     }
 
     /**
@@ -42,9 +42,8 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         jScrollPane1 = new javax.swing.JScrollPane();
         jDataText = new javax.swing.JTextArea();
-        jOppenedFile = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        udpMainTable = new javax.swing.JTable();
 
         jDialog1.setAlwaysOnTop(true);
 
@@ -73,25 +72,21 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        setToolTipText("");
         setMinimumSize(new java.awt.Dimension(940, 530));
-        setPreferredSize(new java.awt.Dimension(940, 530));
 
-        jOppenedFile.setText("jLabel1");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        udpMainTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "num", "byteLen by packet driver", "byteLen on wire", "frame type", "source MAC", "Destination MAC"
+                "Id", "Frame id", "Protocol ", "SourceIp ", "Source Port", "DestinationIp", "Destination Port"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -102,72 +97,69 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        udpMainTable.setColumnSelectionAllowed(true);
+        udpMainTable.setName(""); // NOI18N
+        udpMainTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                udpMainTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jScrollPane2.setViewportView(udpMainTable);
+        udpMainTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (udpMainTable.getColumnModel().getColumnCount() > 0) {
+            udpMainTable.getColumnModel().getColumn(0).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(1).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(2).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(3).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(4).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(5).setResizable(false);
+            udpMainTable.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jOppenedFile)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jOppenedFile)
-                .addContainerGap())
+            .addGap(0, 530, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(5, 5, 5)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                    .addGap(6, 6, 6)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void udpMainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_udpMainTableMouseClicked
         jDialog1.setVisible(true);
         jDialog1.setSize(800, 600);
-        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (jTable1.getSelectedRow()+1) );
-        MainCheckDataUpdater dataSetter = new MainCheckDataUpdater((Frame) an.getFrameList().get(jTable1.getSelectedRow()),this);
-        dataSetter.update();
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    public Analyser getAn() {
-        return an;
-    }
-
-    
-    
-    public JTable getjTable1() {
-        return jTable1;
-    }
+        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (udpMainTable.getSelectedRow() + 1));
+        IcmpParserDataUpdater communicationSetter = new IcmpParserDataUpdater(comm.getList().get(udpMainTable.getSelectedRow()), this);
+    }//GEN-LAST:event_udpMainTableMouseClicked
 
     public JTextArea getjDataText() {
         return jDataText;
     }
 
+    public JTable getUdpMainTable() {
+        return udpMainTable;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea jDataText;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JLabel jOppenedFile;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable udpMainTable;
     // End of variables declaration//GEN-END:variables
 
-    public Object getUdpMainTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 }

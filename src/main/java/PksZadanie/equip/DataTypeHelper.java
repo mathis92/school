@@ -42,7 +42,6 @@ public class DataTypeHelper {
         while (temp > 1) {
             i++;
             temp = temp / (1024);
-            System.out.println(temp);
         }
         temp = temp * 1024;
         double out = new Double(temp1.format(temp)).doubleValue();

@@ -60,7 +60,6 @@ public final class Frame {
         Integer etherTypeInt;
         etherType = new byte[]{buffer.get(), buffer.get()};
         etherTypeInt = DataTypeHelper.toInt(etherType);
-        //  System.out.println(etherTypeInt);
 
         if (etherTypeInt >= 1536) {
             frameType = "Ethernet II";
@@ -68,11 +67,9 @@ public final class Frame {
                 isIpV4 = true;
                 ipv4 = new IpV4Parser(buffer);
                 ipv4.analyse();
-  //              System.out.println("je to IpV4");
             }
             else if (etherTypeInt == 2054) {
                 isARP = true;
-//                System.out.println("mam tu arp");
                 arp = new ArpParser(buffer);
                 arp.analyse();
             }
@@ -89,8 +86,6 @@ public final class Frame {
                     frameType = "IEEE 802.2 SNAP";
                 }
             } else {
-                //      System.out.print(temp);
-                //     System.out.print(buffer.get());
                 frameType = "IEEE 802.2 LLC";
             }
         }

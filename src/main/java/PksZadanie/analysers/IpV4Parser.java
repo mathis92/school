@@ -25,6 +25,8 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
     private byte ipv4Protocol;
     private boolean isIcmp;
     private boolean isTcp;
+    private boolean isUdp;
+    private UdpParser udpParser = null;
     private TcpParser tcpParser = null;
 
     public IpV4Parser(Buffer buffer) {
@@ -47,7 +49,6 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
         ipV4theMostSentBytes = ipV4length + 14;
         buffer.skip(5);
         ipv4Protocol = buffer.get();
-        //      System.out.println(DataTypeHelper.singleToInt(ipv4Protocol));
         buffer.skip(2);
         for (int i = 0; i < 4; i++) {
             sourceIPbyte[i] = buffer.get();
@@ -64,7 +65,6 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
                 sourceIP += "\n";
             }
         }
-        //    System.out.println("sourceee IP " + sourceIP);
         for (int i = 0; i < 4; i++) {
             destinationIPbyte[i] = buffer.get();
             // DataTypeHelper newInt = new DataTypeHelper(destinationIPbyte[i]);
@@ -93,6 +93,10 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
             isTcp = true;
             tcpParser = new TcpParser(buffer);
         }
+        if(ipv4Protocol == 0x11){
+            isUdp = true;
+            udpParser = new UdpParser(buffer);
+        }
     }
 
     public boolean getIsIcmp() {
@@ -104,6 +108,18 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
     }
 
     public boolean getIsTcp() {
+        return isTcp;
+    }
+
+    public UdpParser getUdpParser() {
+        return udpParser;
+    }
+    
+    public boolean isIsUdp() {
+        return isUdp;
+    }
+
+    public boolean isIsTcp() {
         return isTcp;
     }
 

@@ -6,6 +6,7 @@
 
 package PksZadanie;
 
+import PksZadanie.equip.TcpCommunication;
 import PksZadanie.equip.Frame;
 import PksZadanie.equip.TcpCommunicationDataUpdater;
 import PksZadanie.equip.TcpParserDataUpdater;
@@ -23,9 +24,11 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
 
    private Analyser an;
    private ArrayList<Frame> typeList;
-    public AnalyserTcpParserPanel(Analyser an, ArrayList<Frame> typeList) {
+   private TcpCommunication comm;
+    public AnalyserTcpParserPanel(Analyser an,TcpCommunication comm) {
         this.an = an;
-        this.typeList = typeList;
+        this.typeList = comm.getList();
+        this.comm = comm;
         initComponents();
     }
 
@@ -260,6 +263,10 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
 
     public JTable getjTable3() {
         return jTable3;
+    }
+
+    public TcpCommunication getComm() {
+        return comm;
     }
 
     public JTable getTcpMainTable() {
