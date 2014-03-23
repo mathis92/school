@@ -6,6 +6,9 @@
 package PksZadanie;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
@@ -19,9 +22,23 @@ public class AnalyserGUI extends javax.swing.JFrame {
 
     private Integer arpTabExists = null;
     private Integer icmpTabExists = null;
+    private Integer httpTabExists = null;
+    private Integer httpsTabExists = null;
+    private Integer ftpcTabExists = null;
+    private Integer sshTabExists = null;
+    private Integer ftpdTabExists = null;
+    private Integer telnetTabExists = null;
     private File pcapFile;
     private JTabbedPane jTabbedPane4;
     private JTabbedPane jTabbedPane5;
+    private JTabbedPane jTabbedPane6;
+    private JTabbedPane jTabbedPane7;
+    private JTabbedPane jTabbedPane8;
+    private JTabbedPane jTabbedPane9;
+    private JTabbedPane jTabbedPane10;
+    private JTabbedPane jTabbedPane11;
+    
+    
 
     public AnalyserGUI() {
         initComponents();
@@ -97,32 +114,85 @@ public class AnalyserGUI extends javax.swing.JFrame {
         chooser.setFileFilter(new FileNameExtensionFilter("only .pcap", "pcap"));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println("You chose to open this directory: "
-                    + chooser.getSelectedFile().getAbsolutePath());
-            pcapFile = chooser.getSelectedFile();
-            AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
-            jTabbedPane1.addTab("MainCheck", jTabbedPane3);
-            jTabbedPane3.addTab(pcapFile.getName(), panel);
-            jTabbedPane3.addTab("Scan Result", panel.getAn().getResult());
-            if (panel.getAn().getArpPanel() != null) {
+            try {
+                System.out.println("You chose to open this directory: "
+                        + chooser.getSelectedFile().getAbsolutePath());
+                pcapFile = chooser.getSelectedFile();
+                AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
+                jTabbedPane1.addTab("MainCheck", jTabbedPane3);
+                jTabbedPane3.addTab(pcapFile.getName(), panel);
+                jTabbedPane3.addTab("Scan Result", panel.getAn().getResult());
+                if (panel.getAn().getArpPanel() != null) {
 
-                if (arpTabExists == null) {
-                    jTabbedPane4 = new JTabbedPane();
-                    jTabbedPane1.addTab("ARP", jTabbedPane4);
-                    arpTabExists = 1;
+                    if (arpTabExists == null) {
+                        jTabbedPane4 = new JTabbedPane();
+                        jTabbedPane1.addTab("ARP", jTabbedPane4);
+                        arpTabExists = 1;
+                    }
+                    jTabbedPane4.addTab(pcapFile.getName(), panel.getAn().getArpPanel());
                 }
-                jTabbedPane4.addTab(pcapFile.getName(), panel.getAn().getArpPanel());
-            }
-         
-            if(panel.getAn().getIcmpPanel() != null){
-                if(icmpTabExists == null){
-                    jTabbedPane5 = new JTabbedPane();
-                    jTabbedPane1.addTab("ICMP", jTabbedPane5);
-                    icmpTabExists = 1;
+
+                if (panel.getAn().getIcmpPanel() != null) {
+                    if (icmpTabExists == null) {
+                        jTabbedPane5 = new JTabbedPane();
+                        jTabbedPane1.addTab("ICMP", jTabbedPane5);
+                        icmpTabExists = 1;
+                    }
+                    jTabbedPane5.addTab(pcapFile.getName(), panel.getAn().getIcmpPanel());
                 }
-                jTabbedPane5.addTab(pcapFile.getName(), panel.getAn().getIcmpPanel());
+                if(panel.getAn().getHttpPanel() != null){
+                    if(httpTabExists == null){
+                        jTabbedPane6 = new JTabbedPane();
+                        jTabbedPane1.addTab("HTTP", jTabbedPane6);
+                        httpTabExists = 1;
+                    }
+                    jTabbedPane6.addTab(pcapFile.getName(), panel.getAn().getHttpPanel());
+                }
+                if(panel.getAn().getHttpsPanel() != null){
+                    if(httpsTabExists == null){
+                        jTabbedPane7 = new JTabbedPane();
+                        jTabbedPane1.addTab("HTTPS", jTabbedPane7);
+                        httpsTabExists = 1;
+                    }
+                    jTabbedPane7.addTab(pcapFile.getName(), panel.getAn().getHttpsPanel());
+                }
+                
+                if(panel.getAn().getFtpcPanel() != null){
+                    if(ftpcTabExists == null){
+                        jTabbedPane8 = new JTabbedPane();
+                        jTabbedPane1.addTab("FTP-c",jTabbedPane8);
+                        ftpcTabExists = 1;
+                    }
+                    jTabbedPane8.addTab(pcapFile.getName(), panel.getAn().getFtpcPanel());
+                }
+                if(panel.getAn().getSshPanel()!= null){
+                    if(sshTabExists == null){
+                        jTabbedPane9 = new JTabbedPane();
+                        jTabbedPane1.addTab("SSH",jTabbedPane9);
+                        sshTabExists = 1;
+                    }
+                    jTabbedPane9.addTab(pcapFile.getName(), panel.getAn().getSshPanel());
+                }
+                if(panel.getAn().getFtpdPanel()!= null){
+                    if(ftpdTabExists == null){
+                        jTabbedPane10 = new JTabbedPane();
+                        jTabbedPane1.addTab("FTP-d",jTabbedPane10);
+                        ftpdTabExists = 1;
+                    }
+                    jTabbedPane10.addTab(pcapFile.getName(), panel.getAn().getFtpdPanel());
+                }
+                if(panel.getAn().getTelnetPanel()!= null){
+                    if(telnetTabExists == null){
+                        jTabbedPane11 = new JTabbedPane();
+                        jTabbedPane1.addTab("Telnet",jTabbedPane11);
+                        telnetTabExists = 1;
+                    }
+                    jTabbedPane11.addTab(pcapFile.getName(), panel.getAn().getTelnetPanel());
+                }
+                jTabbedPane1.setVisible(true);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(AnalyserGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            jTabbedPane1.setVisible(true);
 
         }
     }//GEN-LAST:event_fileChooseActionPerformed

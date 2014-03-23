@@ -34,6 +34,10 @@ public final class Frame {
     public IpV4Parser ipv4;
     public ArpParser arp;
     public Analyser an;
+    public Integer communicationListId;
+    public Integer comId;
+    public String protocol;
+    public String applicationProtocol;
 
     public Frame(int id, PcapPacket packet, Analyser an) {
         this.id = id;
@@ -64,11 +68,11 @@ public final class Frame {
                 isIpV4 = true;
                 ipv4 = new IpV4Parser(buffer);
                 ipv4.analyse();
-                //        System.out.println("je to IpV4");
+  //              System.out.println("je to IpV4");
             }
-            if (etherTypeInt == 2054) {
+            else if (etherTypeInt == 2054) {
                 isARP = true;
-                System.out.println("mam tu arp");
+//                System.out.println("mam tu arp");
                 arp = new ArpParser(buffer);
                 arp.analyse();
             }
@@ -124,6 +128,38 @@ public final class Frame {
 
     public boolean getIsArp() {
         return isARP;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setApplicationProtocol(String applicationProtocol) {
+        this.applicationProtocol = applicationProtocol;
+    }
+
+    public String getApplicationProtocol() {
+        return applicationProtocol;
+    }
+    
+        public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public Integer getComId() {
+        return comId;
+    }
+
+    public void setComId(Integer comId) {
+        this.comId = comId;
+    }
+
+    public void setCommunicationId(Integer communicationId) {
+        this.communicationListId = communicationId;
+    }
+
+    public Integer getCommunicationId() {
+        return communicationListId;
     }
 
     public ArpParser getArpParser() {

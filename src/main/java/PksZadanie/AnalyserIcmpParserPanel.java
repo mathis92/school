@@ -68,6 +68,7 @@ public class AnalyserIcmpParserPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        setToolTipText("");
         setMinimumSize(new java.awt.Dimension(940, 530));
         setPreferredSize(new java.awt.Dimension(940, 530));
 

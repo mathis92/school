@@ -80,7 +80,7 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
                 destinationIP += "\n";
             }
         }
-        
+
         if (ihl > 5) {
             buffer.skip(ihl - 20);
         }
@@ -103,9 +103,10 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
         return tcpParser;
     }
 
-    public boolean getIsTcp(){
+    public boolean getIsTcp() {
         return isTcp;
     }
+
     public Integer getiPv4length() {
         return ipV4length;
     }
@@ -118,8 +119,16 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
         return ipV4theMostSentBytes;
     }
 
+    public byte[] getSourceIPbyte() {
+        return sourceIPbyte;
+    }
+
     public String getSourceIP() {
         return sourceIP;
+    }
+
+    public byte[] getDestinationIPbyte() {
+        return destinationIPbyte;
     }
 
     public String getDestinationIP() {
