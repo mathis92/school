@@ -9,6 +9,7 @@ import PksZadanie.equip.TcpCommunication;
 import PksZadanie.equip.UdpCommunication;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,36 +23,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Mathis
  */
 public class AnalyserGUI extends javax.swing.JFrame {
+
+     
     private Integer arpTabExists = null;
     private Integer icmpTabExists = null;
-    private Integer httpTabExists = null;
-    private Integer httpsTabExists = null;
-    private Integer ftpcTabExists = null;
-    private Integer sshTabExists = null;
-    private Integer ftpdTabExists = null;
-    private Integer telnetTabExists = null;
-    private Integer udpHttpTabExist = null;
-    private Integer udpHttpsTabExist = null;
-    private Integer udpSshTabExist = null;
-    private Integer udpTftpTabExist = null;
-    private ArrayList<JTabbedPane> udpTabs = new ArrayList<>();
+ 
+    private final ArrayList<JTabbedPane> udpTabs = new ArrayList<>();
     private ArrayList<String> udpTabHelper = new ArrayList<>();
-    private ArrayList<JTabbedPane> tcpTabs = new ArrayList<>();
-    private ArrayList<String> tcpTabHelper = new ArrayList<>();
+    private final ArrayList<JTabbedPane> tcpTabs = new ArrayList<>();
+    private final ArrayList<String> tcpTabHelper = new ArrayList<>();
 
     private File pcapFile;
     private JTabbedPane jTabbedPane4;
     private JTabbedPane jTabbedPane5;
-    private JTabbedPane jTabbedPane6;
-    private JTabbedPane jTabbedPane7;
-    private JTabbedPane jTabbedPane8;
-    private JTabbedPane jTabbedPane9;
-    private JTabbedPane jTabbedPane10;
-    private JTabbedPane jTabbedPane11;
-    private JTabbedPane jTabbedPane12;
-    private JTabbedPane jTabbedPane13;
-    private JTabbedPane jTabbedPane14;
-    private JTabbedPane jTabbedPane15;
 
     public AnalyserGUI() {
         initComponents();
@@ -94,7 +78,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileChoose)
@@ -102,7 +86,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,7 +96,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(fileChoose))
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -126,12 +110,18 @@ public class AnalyserGUI extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setFileFilter(new FileNameExtensionFilter("only .pcap", "pcap"));
         int returnVal = chooser.showOpenDialog(null);
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
                 System.out.println("You chose to open this directory: "
                         + chooser.getSelectedFile().getAbsolutePath());
                 pcapFile = chooser.getSelectedFile();
+                // jLabel2.setText("LOADING FILE : ");
+                //    jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("F:\\Moje dokumenty\\Martin HUdec\\škola\\FIIT\\4. sem\\PKS\\pkspkspks\\src\\main\\java\\images\\loading.gif")));
+                // jTextArea1.setText("LOADING file" + pcapFile.getPath());
+                
                 AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
+
                 jTabbedPane1.addTab("File content", jTabbedPane3);
                 jTabbedPane3.addTab(pcapFile.getName(), panel);
                 jTabbedPane3.addTab("Scan Result", panel.getAn().getResult());
@@ -153,68 +143,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
                     }
                     jTabbedPane5.addTab(pcapFile.getName(), panel.getAn().getIcmpPanel());
                 }
-                /*
-                 if (panel.getAn().getHttpComm() != null) {
-                 if (panel.getAn().getHttpComm().getPanel() != null) {
-                 if (httpTabExists == null) {
-                 jTabbedPane6 = new JTabbedPane();
-                 jTabbedPane1.addTab("HTTP", jTabbedPane6);
-                 httpTabExists = 1;
-                 }
-                 jTabbedPane6.addTab(pcapFile.getName(), panel.getAn().getHttpComm().getPanel());
-                 }
-                 }
-                 if (panel.getAn().getHttpsComm() != null) {
-                 if (panel.getAn().getHttpsComm().getPanel() != null) {
-                 if (httpsTabExists == null) {
-                 jTabbedPane7 = new JTabbedPane();
-                 jTabbedPane1.addTab("HTTPS", jTabbedPane7);
-                 httpsTabExists = 1;
-                 }
-                 jTabbedPane7.addTab(pcapFile.getName(), panel.getAn().getHttpsComm().getPanel());
-                 }
-                 }
-                 if (panel.getAn().getFtpcComm() != null) {
-                 if (panel.getAn().getFtpcComm().getPanel() != null) {
-                 if (ftpcTabExists == null) {
-                 jTabbedPane8 = new JTabbedPane();
-                 jTabbedPane1.addTab("FTP-c", jTabbedPane8);
-                 ftpcTabExists = 1;
-                 }
-                 jTabbedPane8.addTab(pcapFile.getName(), panel.getAn().getFtpcComm().getPanel());
-                 }
-                 }
-                 if (panel.getAn().getSshComm() != null) {
-                 if (panel.getAn().getSshComm().getPanel() != null) {
-                 if (sshTabExists == null) {
-                 jTabbedPane9 = new JTabbedPane();
-                 jTabbedPane1.addTab("SSH", jTabbedPane9);
-                 sshTabExists = 1;
-                 }
-                 jTabbedPane9.addTab(pcapFile.getName(), panel.getAn().getSshComm().getPanel());
-                 }
-                 }
-                 if (panel.getAn().getFtpdComm() != null) {
-                 if (panel.getAn().getFtpdComm().getPanel() != null) {
-                 if (ftpdTabExists == null) {
-                 jTabbedPane10 = new JTabbedPane();
-                 jTabbedPane1.addTab("FTP-d", jTabbedPane10);
-                 ftpdTabExists = 1;
-                 }
-                 jTabbedPane10.addTab(pcapFile.getName(), panel.getAn().getFtpdComm().getPanel());
-                 }
-                 }
-                 if (panel.getAn().getTelnetComm() != null) {
-                 if (panel.getAn().getTelnetComm().getPanel() != null) {
-                 if (telnetTabExists == null) {
-                 jTabbedPane11 = new JTabbedPane();
-                 jTabbedPane1.addTab("Telnet", jTabbedPane11);
-                 telnetTabExists = 1;
-                 }
-                 jTabbedPane11.addTab(pcapFile.getName(), panel.getAn().getTelnetComm().getPanel());
-                 }
-                 }
-                 */
+             
                 Integer index = 0;
                 for (TcpCommunication temp : panel.getAn().getTcpCommunicationList()) {
                     Integer found = 0;
@@ -255,12 +184,13 @@ public class AnalyserGUI extends javax.swing.JFrame {
                         udpTabs.add(newPane);
                         udpTabHelper.add(temp.getList().get(0).getApplicationProtocol());
                         newPane.addTab(pcapFile.getName(), temp.getPanel());
-                   
+
                     }
                 }
-
                 jTabbedPane1.setVisible(true);
             } catch (FileNotFoundException ex) {
+                Logger.getLogger(AnalyserGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(AnalyserGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
 

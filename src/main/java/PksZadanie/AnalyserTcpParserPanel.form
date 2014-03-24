@@ -277,9 +277,9 @@
                 <Column editable="false" title="Communication Id" type="java.lang.Integer"/>
                 <Column editable="false" title="Protocol " type="java.lang.Integer"/>
                 <Column editable="false" title="SourceIp " type="java.lang.String"/>
-                <Column editable="false" title="Source Port" type="java.lang.Integer"/>
+                <Column editable="false" title="Source Port" type="java.lang.String"/>
                 <Column editable="false" title="DestinationIp" type="java.lang.String"/>
-                <Column editable="false" title="Destination Port" type="java.lang.Integer"/>
+                <Column editable="false" title="Destination Port" type="java.lang.String"/>
                 <Column editable="false" title="Completed" type="java.lang.Integer"/>
                 <Column editable="false" title="Frame count" type="java.lang.Integer"/>
               </Table>

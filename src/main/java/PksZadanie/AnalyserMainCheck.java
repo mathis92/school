@@ -9,6 +9,7 @@ import PksZadanie.equip.MainCheckDataUpdater;
 import PksZadanie.equip.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import pkszadanie.analysers.Analyser;
@@ -22,7 +23,7 @@ public class AnalyserMainCheck extends javax.swing.JPanel {
     public AnalyserGUI gui;
     public Analyser an;
 
-    public AnalyserMainCheck(File pcapFile, AnalyserGUI gui) throws FileNotFoundException {
+    public AnalyserMainCheck(File pcapFile, AnalyserGUI gui) throws FileNotFoundException, IOException{
         this.gui = gui;
         initComponents();
         an = new Analyser(this, pcapFile, gui);

@@ -5,11 +5,10 @@
  */
 package PksZadanie;
 
-import PksZadanie.equip.IcmpParserDataUpdater;
 import PksZadanie.equip.UdpCommunication;
+import PksZadanie.equip.UdpParserDataUpdater;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
 import pkszadanie.analysers.Analyser;
 
 /**
@@ -142,7 +141,8 @@ this.comm = communication;
         jDialog1.setVisible(true);
         jDialog1.setSize(800, 600);
         jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (udpMainTable.getSelectedRow() + 1));
-        IcmpParserDataUpdater communicationSetter = new IcmpParserDataUpdater(comm.getList().get(udpMainTable.getSelectedRow()), this);
+        UdpParserDataUpdater communicationSetter = new UdpParserDataUpdater(comm.getList().get(udpMainTable.getSelectedRow()), this);
+        communicationSetter.update();
     }//GEN-LAST:event_udpMainTableMouseClicked
 
     public JTextArea getjDataText() {

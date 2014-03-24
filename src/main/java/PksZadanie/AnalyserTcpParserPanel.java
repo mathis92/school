@@ -28,6 +28,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
     public AnalyserTcpParserPanel(Analyser an,TcpCommunication comm) {
         this.an = an;
         this.typeList = comm.getList();
+        
         this.comm = comm;
         initComponents();
     }
@@ -174,7 +175,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -237,6 +238,8 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (tcpMainTable.getSelectedRow() + 1));
         DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
         tableModel.setRowCount(0);
+        DefaultTableModel tableModel1 = (DefaultTableModel) jTable3.getModel();
+        tableModel1.setRowCount(0);
         TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(typeList.get(tcpMainTable.getSelectedRow()), this);
     }//GEN-LAST:event_tcpMainTableMouseClicked
 
@@ -245,7 +248,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jDialog2.setSize(950, 650);
         jDialog2.setAlwaysOnTop(true);
         jDialog2.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (jTable2.getSelectedRow() + 1));
-        TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) typeList.get(jTable2.getSelectedRow()), this);
+        TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(typeList.get(tcpMainTable.getSelectedRow()).getComId()).getTcpCommList().get(jTable2.getSelectedRow()), this);
         dataSetter.update();
     }//GEN-LAST:event_jTable2MouseClicked
 
