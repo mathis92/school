@@ -24,16 +24,8 @@ import PksZadanie.equip.CommunicationChannel;
 import PksZadanie.equip.DataTypeHelper;
 import PksZadanie.equip.Frame;
 import PksZadanie.equip.UdpCommunication;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -48,10 +40,6 @@ public class Analyser {
     private ArrayList<Frame> longestIplist;
     private ArrayList<ArpStorage> arpStorageFrameList;
     private ArrayList<Frame> icmpList;
-    private UdpCommunication udpHttpComm = null;
-    private UdpCommunication udpSshComm = null;
-    private UdpCommunication udpTftpComm = null;
-    private UdpCommunication udpHttpsComm = null;
     private ArrayList<UdpCommunication> udpCommunicationList;
     private ArrayList<TcpCommunication> tcpCommunicationList;
     private ArrayList<String> tcpCommunicationHelper;
@@ -119,7 +107,7 @@ public class Analyser {
 
                                 if (tcpPort != null) {
                                     if (tcpPort.equals("www")) {
-                                        tcpPort = "HTTP";
+                                        tcpPort = "http";
                                     }
                                     frame.setApplicationProtocol(tcpPort);
                                     if (tcpCommunicationHelper.contains(tcpPort) == false) {
@@ -133,23 +121,25 @@ public class Analyser {
                             }
                         }
                         if (frame.getIpv4parser().getUdpParser() != null) {
-                            frame.setProtocol("UDP");
-                            String udpPort = DataTypeHelper.udpMap.get(DataTypeHelper.toInt(frame.getIpv4parser().getUdpParser().getDestinationPort()));
-                            if (udpPort == null) {
-                                udpPort = DataTypeHelper.udpMap.get(DataTypeHelper.toInt(frame.getIpv4parser().getUdpParser().getSourcePort()));
-                            }
-
-                            if (udpPort != null) {
-                                if (udpPort.equals("www")) {
-                                    udpPort = "HTTP";
+                            if (frame.getIpv4parser().getUdpParser().isIsUdp()) {
+                                frame.setProtocol("UDP");
+                                String udpPort = DataTypeHelper.udpMap.get(DataTypeHelper.toInt(frame.getIpv4parser().getUdpParser().getDestinationPort()));
+                                if (udpPort == null) {
+                                    udpPort = DataTypeHelper.udpMap.get(DataTypeHelper.toInt(frame.getIpv4parser().getUdpParser().getSourcePort()));
                                 }
-                                frame.setApplicationProtocol(udpPort);
-                                if (udpCommunicationHelper.contains(udpPort) == false) {
-                                    UdpCommunication newCommunication = new UdpCommunication(frame);
-                                    udpCommunicationList.add(newCommunication);
-                                    udpCommunicationHelper.add(udpPort);
-                                } else {
-                                    udpCommunicationList.get(udpCommunicationHelper.indexOf(udpPort)).storeCommunication(frame);
+
+                                if (udpPort != null) {
+                                    if (udpPort.equals("www")) {
+                                        udpPort = "http";
+                                    }
+                                    frame.setApplicationProtocol(udpPort);
+                                    if (udpCommunicationHelper.contains(udpPort) == false) {
+                                        UdpCommunication newCommunication = new UdpCommunication(frame);
+                                        udpCommunicationList.add(newCommunication);
+                                        udpCommunicationHelper.add(udpPort);
+                                    } else {
+                                        udpCommunicationList.get(udpCommunicationHelper.indexOf(udpPort)).storeCommunication(frame);
+                                    }
                                 }
                             }
                         }
@@ -365,9 +355,12 @@ public class Analyser {
         data[1] = temp.getComId();
         data[2] = temp.getProtocol();
         data[3] = temp.getIpv4parser().getSourceIP();
-        data[4] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
+        Integer sPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
+        data[4] = sPort + " [" + DataTypeHelper.getTcpPortName(sPort) + "]";
         data[5] = temp.getIpv4parser().getDestinationIP();
-        data[6] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
+        Integer dPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
+        data[6] = dPort + " [" + DataTypeHelper.getTcpPortName(dPort) + "]";
+
         if (comm.getComList().get(temp.getComId()).getCompleted() == 0) {
             data[7] = "Incomplete";
         } else {
@@ -386,24 +379,8 @@ public class Analyser {
         return udpCommunicationList;
     }
 
-    public UdpCommunication getUdpTftpComm() {
-        return udpTftpComm;
-    }
-
-    public UdpCommunication getUdpSshComm() {
-        return udpSshComm;
-    }
-
     public ArrayList<TcpCommunication> getTcpCommunicationList() {
         return tcpCommunicationList;
-    }
-
-    public UdpCommunication getUdpHttpsComm() {
-        return udpHttpsComm;
-    }
-
-    public UdpCommunication getUdpHttpComm() {
-        return udpHttpComm;
     }
 
     public AnalyserIcmpParserPanel getIcmpPanel() {

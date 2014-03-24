@@ -60,8 +60,8 @@
                     <Column editable="false" title="Frame Id" type="java.lang.Integer"/>
                     <Column editable="false" title="SourceIp " type="java.lang.String"/>
                     <Column editable="false" title="DestinationIp" type="java.lang.String"/>
-                    <Column editable="false" title="Source Port" type="java.lang.Integer"/>
-                    <Column editable="false" title="Destination Port" type="java.lang.Integer"/>
+                    <Column editable="false" title="Source Port" type="java.lang.String"/>
+                    <Column editable="false" title="Destination Port" type="java.lang.String"/>
                     <Column editable="false" title="Flags" type="java.lang.String"/>
                     <Column editable="false" title="Source MAC" type="java.lang.String"/>
                     <Column editable="false" title="Destination MAC" type="java.lang.String"/>
@@ -116,6 +116,7 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>

@@ -27,6 +27,7 @@ import pkszadanie.analysers.Analyser;
 public class DataTypeHelper {
    public static Map<Integer, String> tcpMap;
    public static Map<Integer, String> udpMap;
+   public static String portFilePath = null;
 
     //  public byte[] byteArray;
     //  public byte singleByte;
@@ -67,7 +68,7 @@ public class DataTypeHelper {
                 tcpMap = new HashMap<>();
                 udpMap = new HashMap<>();
 
-                fis = new FileInputStream("F:\\Moje dokumenty\\Martin HUdec\\škola\\FIIT\\4. sem\\PKS\\pkspkspks\\src\\main\\java\\files\\ports.txt");
+                fis = new FileInputStream(portFilePath);
                 reader = new BufferedReader(new InputStreamReader(fis));
                 String line = reader.readLine();
                 while (line != null) {
@@ -140,6 +141,15 @@ public class DataTypeHelper {
         
         return portName;
     }
+    public static String getTcpPortName(Integer port){
+        
+        String portName = tcpMap.get(port);
+        if(portName == null){
+            portName = "unknown";
+        }
+        return portName;
+    }
+    
     public static String ipAdressConvertor(byte[] ipAdressByteArray) {
         String ipAdress = null;
         for (int i = 0; i < 4; i++) {

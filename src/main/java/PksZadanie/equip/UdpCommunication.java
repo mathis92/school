@@ -14,6 +14,7 @@ private ArrayList<Frame> list = new ArrayList<>();
 private AnalyserUdpParserPanel panel = null;
 private Integer found = 0;
     public UdpCommunication(Frame frame) {
+        storeCommunication(frame);
         found = 1;
     }
 

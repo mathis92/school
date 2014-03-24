@@ -50,8 +50,10 @@ public class TcpCommunicationDataUpdater {
             data[1] = temp.getId();
             data[2] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getSourceIPbyte());
             data[3] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getDestinationIPbyte());
-            data[4] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
-            data[5] = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
+            Integer sPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
+            data[4] = (sPort + " [" + DataTypeHelper.getTcpPortName(sPort) + "]");
+            Integer dPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
+            data[5] = (dPort + " [" + DataTypeHelper.getTcpPortName(dPort) + "]");
             data[6] = DataTypeHelper.getTcpPortFlags(temp);
             data[7] = DataTypeHelper.macAdressConvertor(temp.getSourceMACByte());
             data[8] = DataTypeHelper.macAdressConvertor(temp.getDestinationMACByte());
