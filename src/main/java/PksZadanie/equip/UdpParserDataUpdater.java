@@ -15,17 +15,17 @@ import java.util.ArrayList;
  *
  * @author Mathis
  */
-public class IcmpParserDataUpdater {
+public class UdpParserDataUpdater {
 
     public Frame frame;
-    public AnalyserIcmpParserPanel dataFrame;
     public AnalyserUdpParserPanel dataFrameUdp;
 
-    public IcmpParserDataUpdater(Frame frame, AnalyserIcmpParserPanel dataPanel) {
+    public UdpParserDataUpdater(Frame frame, AnalyserUdpParserPanel dataPanel) {
         this.frame = frame;
-        this.dataFrame = dataPanel;
+        this.dataFrameUdp = dataPanel;
 
     }
+
     public String makeString(byte data) {
         StringBuilder dataByte = new StringBuilder();
         dataByte.append(String.format("%02X ", data));
@@ -52,7 +52,7 @@ public class IcmpParserDataUpdater {
                 data += "\n";
             }
         }
-        dataFrame.getjDataText().setText(data);
+        dataFrameUdp.getjDataText().setText(data);
 
     }
 }

@@ -36,13 +36,13 @@ public class TcpCommunicationDataUpdater {
             x = x1;
             x1 = x * 2;
         }
-        
-        for(int i=0; i<8;i++){
+
+        for (int i = 0; i < 8; i++) {
             sizesFrames.add(0);
         }
-
+        Integer i = 0;
         for (Frame temp : dataFrame.getComm().getComList().get(frame.getComId()).getTcpCommList()) {
-            Integer i = 0;
+
             i++;
             DefaultTableModel tableModel = (DefaultTableModel) dataFrame.getjTable2().getModel();
             Object data[] = new Object[9];
@@ -72,7 +72,7 @@ public class TcpCommunicationDataUpdater {
                 sizesFrames.set(5, sizesFrames.get(5) + 1);
             } else if (temp.getFrameLength() > 640 && temp.getFrameLength() < 1279) {
                 sizesFrames.set(6, sizesFrames.get(6) + 1);
-            }else if (temp.getFrameLength() > 1280 && temp.getFrameLength() < 2560) {
+            } else if (temp.getFrameLength() > 1280 && temp.getFrameLength() < 2560) {
                 sizesFrames.set(7, sizesFrames.get(7) + 1);
             }
         }

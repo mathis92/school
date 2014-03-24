@@ -6,18 +6,27 @@
 package PksZadanie.equip;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import pkszadanie.analysers.Analyser;
 
 /**
  *
  * @author Mathis
  */
 public class DataTypeHelper {
+   public static Map<Integer, String> tcpMap;
+   public static Map<Integer, String> udpMap;
 
     //  public byte[] byteArray;
     //  public byte singleByte;
@@ -48,6 +57,42 @@ public class DataTypeHelper {
         output = out + " " + units[i - 1];// + "( " + out2 + " B )";
 
         return output;
+    }
+
+    public static void scanFile() throws FileNotFoundException, IOException {
+        try {
+            try {
+                FileInputStream fis = null;
+                BufferedReader reader = null;
+                tcpMap = new HashMap<>();
+                udpMap = new HashMap<>();
+
+                fis = new FileInputStream("F:\\Moje dokumenty\\Martin HUdec\\škola\\FIIT\\4. sem\\PKS\\pkspkspks\\src\\main\\java\\files\\ports.txt");
+                reader = new BufferedReader(new InputStreamReader(fis));
+                String line = reader.readLine();
+                while (line != null) {
+                    line = reader.readLine();
+                    if (line != null) {
+                        line = line.replaceAll("\t", " ").replaceAll("  ", " ");
+                        String[] protocolName = line.split(" ");
+                        String[] protocolCode = protocolName[1].split("/");
+                        // System.out.println(protocolName[0] + " -> " + protocolCode[0] + " -> " + protocolCode[1]);
+                        if (protocolCode[1].toString().equalsIgnoreCase("udp")) {
+                            udpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+                        } else if (protocolCode[1].toString().equalsIgnoreCase("tcp")) {
+                            tcpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+                        }
+                    }
+                }
+                fis.close();
+                reader.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public static Integer singleToInt(byte singleByte) {
@@ -86,7 +131,15 @@ public class DataTypeHelper {
         return macAdress;
 
     }
-
+    public static String getUdpPortName(Integer port){
+        
+        String portName = udpMap.get(port);
+        if(portName == null){
+            portName = "unknown";
+        }
+        
+        return portName;
+    }
     public static String ipAdressConvertor(byte[] ipAdressByteArray) {
         String ipAdress = null;
         for (int i = 0; i < 4; i++) {
