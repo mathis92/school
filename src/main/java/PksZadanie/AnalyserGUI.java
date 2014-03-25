@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.accessibility.AccessibleRole;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
@@ -27,6 +28,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
 
     private Integer arpTabExists = null;
     private Integer icmpTabExists = null;
+    private AnalyserMainCheck panel;
 
     private final ArrayList<JTabbedPane> udpTabs = new ArrayList<>();
     private final ArrayList<String> udpTabHelper = new ArrayList<>();
@@ -34,8 +36,8 @@ public class AnalyserGUI extends javax.swing.JFrame {
     private final ArrayList<String> tcpTabHelper = new ArrayList<>();
 
     private File pcapFile;
-    private JTabbedPane jTabbedPane4;
-    private JTabbedPane jTabbedPane5;
+    private JTabbedPane jTabbedPane4 = null;
+    private JTabbedPane jTabbedPane5 = null;
 
     public AnalyserGUI() {
         this.setTitle("Pcap Offline Analyser xhudecm1");
@@ -142,7 +144,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
 
     private void fileChooseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooseActionPerformed
         jDialog1.setVisible(true);
-        jDialog1.setSize(200,200);
+        jDialog1.setSize(200, 200);
         jDialog1.setTitle("Loading File ....");
         jLabel1.setVisible(true);
         JFileChooser chooser = new JFileChooser();
@@ -160,7 +162,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
                         + chooser.getSelectedFile().getAbsolutePath());
                 pcapFile = chooser.getSelectedFile();
 
-                AnalyserMainCheck panel = new AnalyserMainCheck(pcapFile, this);
+                panel = new AnalyserMainCheck(pcapFile, this);
 
                 jTabbedPane1.addTab("File content", jTabbedPane3);
                 jTabbedPane3.addTab(pcapFile.getName(), panel);
@@ -239,20 +241,34 @@ public class AnalyserGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_fileChooseActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         jTabbedPane1.removeAll();        // TODO add your handling code here:
+        if (jTabbedPane3 != null) {
+            jTabbedPane3.removeAll();
+        }
+        if (jTabbedPane5 != null) {
+            jTabbedPane5.removeAll();
+        }
+        if (jTabbedPane4 != null) {
+            jTabbedPane4.removeAll();
+        }
+        arpTabExists = null;
+        icmpTabExists = null;
         tcpTabHelper.clear();
         udpTabHelper.clear();
         tcpTabs.clear();
         udpTabs.clear();
+        panel.getAn().getIcmpList().clear();
+        panel.getAn().getArpFrameList().clear();
+        panel.getAn().getFrameList().clear();
+        panel.getAn().getTcpCommunicationList().clear();
+        panel.getAn().getUdpCommunicationList().clear();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // AnalyzerGUI gui = new AnalyzerGUI();
-                // AnalyzerGuiController guicontroller = new AnalyzerGuiController();
                 new AnalyserGUI().setVisible(true);
             }
         });

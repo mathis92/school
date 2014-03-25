@@ -29,8 +29,8 @@ public final class Frame {
     private final PcapPacket packet;
     public Buffer buffer;
     public byte[] etherType;
-    private boolean isIpV4;
-    private boolean isARP;
+    private boolean isIpV4 = false;
+    private boolean isARP = false;
     public IpV4Parser ipv4;
     public ArpParser arp;
     public Analyser an;
@@ -69,6 +69,7 @@ public final class Frame {
                 ipv4.analyse();
             }
             else if (etherTypeInt == 2054) {
+                System.out.println("som tu ");
                 isARP = true;
                 arp = new ArpParser(buffer);
                 arp.analyse();

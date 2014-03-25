@@ -45,18 +45,20 @@ public class TcpCommunicationDataUpdater {
 
             i++;
             DefaultTableModel tableModel = (DefaultTableModel) dataFrame.getjTable2().getModel();
-            Object data[] = new Object[9];
+            Object data[] = new Object[11];
             data[0] = i;
             data[1] = temp.getId();
-            data[2] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getSourceIPbyte());
-            data[3] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getDestinationIPbyte());
+            data[2] = temp.getFrameLength();
+            data[3] = temp.getFrameLengthWire();
+            data[4] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getSourceIPbyte());
+            data[5] = DataTypeHelper.ipAdressConvertor(temp.getIpv4parser().getDestinationIPbyte());
             Integer sPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());
-            data[4] = (sPort + " [" + DataTypeHelper.getTcpPortName(sPort) + "]");
+            data[6] = (sPort + " [" + DataTypeHelper.getTcpPortName(sPort) + "]");
             Integer dPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getDestinationPortByte());
-            data[5] = (dPort + " [" + DataTypeHelper.getTcpPortName(dPort) + "]");
-            data[6] = DataTypeHelper.getTcpPortFlags(temp);
-            data[7] = DataTypeHelper.macAdressConvertor(temp.getSourceMACByte());
-            data[8] = DataTypeHelper.macAdressConvertor(temp.getDestinationMACByte());
+            data[7] = (dPort + " [" + DataTypeHelper.getTcpPortName(dPort) + "]");
+            data[8] = DataTypeHelper.getTcpPortFlags(temp);
+            data[9] = DataTypeHelper.macAdressConvertor(temp.getSourceMACByte());
+            data[10] = DataTypeHelper.macAdressConvertor(temp.getDestinationMACByte());
             tableModel.addRow(data);
             dataFrame.getjTable2().setModel(tableModel);
 

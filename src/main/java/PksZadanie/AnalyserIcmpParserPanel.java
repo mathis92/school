@@ -77,7 +77,7 @@ public class AnalyserIcmpParserPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Id", "Packet Id", "SourceIp ", "DestinationIp", "Source MAC adress", "Destination MAC adressl", "Original packet length", "Packet length on wire", "IPv4 length", "ICMP code"
+                "Id", "Packet Id", "SourceIp ", "DestinationIp", "Source MAC adress", "Destination MAC adressl", "Original packet length", "Packet length on wire", "IPv4 length", "ICMP type"
             }
         ) {
             Class[] types = new Class [] {

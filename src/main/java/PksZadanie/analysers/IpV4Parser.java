@@ -91,6 +91,7 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
         }
         if (ipv4Protocol == 0x06) {
             isTcp = true;
+            
             tcpParser = new TcpParser(buffer);
         }
         if(ipv4Protocol == 0x11){

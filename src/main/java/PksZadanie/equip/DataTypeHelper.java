@@ -25,9 +25,10 @@ import pkszadanie.analysers.Analyser;
  * @author Mathis
  */
 public class DataTypeHelper {
-   public static Map<Integer, String> tcpMap;
-   public static Map<Integer, String> udpMap;
-   public static String portFilePath = null;
+
+    public static Map<Integer, String> tcpMap;
+    public static Map<Integer, String> udpMap;
+    public static String portFilePath = null;
 
     //  public byte[] byteArray;
     //  public byte singleByte;
@@ -61,6 +62,7 @@ public class DataTypeHelper {
     }
 
     public static void scanFile() throws FileNotFoundException, IOException {
+        System.out.println("naskenoval som subor");
         try {
             try {
                 FileInputStream fis = null;
@@ -72,18 +74,20 @@ public class DataTypeHelper {
                 reader = new BufferedReader(new InputStreamReader(fis));
                 String line = reader.readLine();
                 while (line != null) {
-                    line = reader.readLine();
                     if (line != null) {
                         line = line.replaceAll("\t", " ").replaceAll("  ", " ");
                         String[] protocolName = line.split(" ");
                         String[] protocolCode = protocolName[1].split("/");
-                        // System.out.println(protocolName[0] + " -> " + protocolCode[0] + " -> " + protocolCode[1]);
+                      //  System.out.println(protocolName[0] + " -> " + protocolCode[0] + " -> " + protocolCode[1]);
                         if (protocolCode[1].toString().equalsIgnoreCase("udp")) {
                             udpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+
                         } else if (protocolCode[1].toString().equalsIgnoreCase("tcp")) {
                             tcpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+
                         }
                     }
+                    line = reader.readLine();
                 }
                 fis.close();
                 reader.close();
@@ -132,24 +136,26 @@ public class DataTypeHelper {
         return macAdress;
 
     }
-    public static String getUdpPortName(Integer port){
-        
+
+    public static String getUdpPortName(Integer port) {
+
         String portName = udpMap.get(port);
-        if(portName == null){
+        if (portName == null) {
             portName = "unknown";
         }
-        
+
         return portName;
     }
-    public static String getTcpPortName(Integer port){
-        
+
+    public static String getTcpPortName(Integer port) {
+
         String portName = tcpMap.get(port);
-        if(portName == null){
+        if (portName == null) {
             portName = "unknown";
         }
         return portName;
     }
-    
+
     public static String ipAdressConvertor(byte[] ipAdressByteArray) {
         String ipAdress = null;
         for (int i = 0; i < 4; i++) {

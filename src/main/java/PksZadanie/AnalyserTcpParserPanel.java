@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package PksZadanie;
 
 import PksZadanie.equip.TcpCommunication;
@@ -22,13 +21,15 @@ import pkszadanie.analysers.Analyser;
  */
 public class AnalyserTcpParserPanel extends javax.swing.JPanel {
 
-   private Analyser an;
-   private ArrayList<Frame> typeList;
-   private TcpCommunication comm;
-    public AnalyserTcpParserPanel(Analyser an,TcpCommunication comm) {
+    private Analyser an;
+    private ArrayList<Frame> typeList;
+   
+    private TcpCommunication comm;
+
+    public AnalyserTcpParserPanel(Analyser an, TcpCommunication comm) {
         this.an = an;
         this.typeList = comm.getList();
-        
+
         this.comm = comm;
         initComponents();
     }
@@ -61,14 +62,14 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Id", "Frame Id", "SourceIp ", "DestinationIp", "Source Port", "Destination Port", "Flags", "Source MAC", "Destination MAC"
+                "Id", "Frame Id", "Frame length", "Wire Length", "SourceIp ", "DestinationIp", "Source Port", "Destination Port", "Flags", "Source MAC", "Destination MAC"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -81,6 +82,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         });
         jTable2.setColumnSelectionAllowed(true);
         jTable2.setName(""); // NOI18N
+        jTable2.getTableHeader().setReorderingAllowed(false);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -90,14 +92,20 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jTable2.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(0).setPreferredWidth(20);
             jTable2.getColumnModel().getColumn(1).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setPreferredWidth(30);
             jTable2.getColumnModel().getColumn(2).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setPreferredWidth(40);
             jTable2.getColumnModel().getColumn(3).setResizable(false);
+            jTable2.getColumnModel().getColumn(3).setPreferredWidth(40);
             jTable2.getColumnModel().getColumn(4).setResizable(false);
             jTable2.getColumnModel().getColumn(5).setResizable(false);
             jTable2.getColumnModel().getColumn(6).setResizable(false);
             jTable2.getColumnModel().getColumn(7).setResizable(false);
             jTable2.getColumnModel().getColumn(8).setResizable(false);
+            jTable2.getColumnModel().getColumn(9).setResizable(false);
+            jTable2.getColumnModel().getColumn(10).setResizable(false);
         }
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
@@ -241,7 +249,11 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         tableModel.setRowCount(0);
         DefaultTableModel tableModel1 = (DefaultTableModel) jTable3.getModel();
         tableModel1.setRowCount(0);
-        TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(typeList.get(tcpMainTable.getSelectedRow()), this);
+        if (an.getUsingTcp2Output().equals(0)) {
+            TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(typeList.get(tcpMainTable.getSelectedRow()), this);
+        } else if (an.getUsingTcp2Output().equals(1)) {
+            TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(comm.getComList().get(tcpMainTable.getSelectedRow()).getTcpCommList().get(0), this);
+        }
     }//GEN-LAST:event_tcpMainTableMouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -249,8 +261,15 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jDialog2.setSize(950, 650);
         jDialog2.setAlwaysOnTop(true);
         jDialog2.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (jTable2.getSelectedRow() + 1));
-        TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(typeList.get(tcpMainTable.getSelectedRow()).getComId()).getTcpCommList().get(jTable2.getSelectedRow()), this);
-        dataSetter.update();
+        if (an.getUsingTcp2Output().equals(0)) {
+            TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(typeList.get(tcpMainTable.getSelectedRow()).getComId()).getTcpCommList().get(jTable2.getSelectedRow()), this);
+            dataSetter.update();
+        } else if (an.getUsingTcp2Output().equals(1)) {
+            TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(tcpMainTable.getSelectedRow()).getTcpCommList().get(jTable2.getSelectedRow()), this);
+            dataSetter.update();
+        }
+
+
     }//GEN-LAST:event_jTable2MouseClicked
 
     public Analyser getAn() {

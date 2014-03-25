@@ -1,4 +1,4 @@
-HTTP		80/tcp		http		# WorldWideWeb HTTP
+HTTP		80/tcp			# WorldWideWeb HTTP
 HTTP		80/udp				# HyperText Transfer Protocol
 HTTPS		443/tcp				# http protocol over 
 HTTPS		443/udp

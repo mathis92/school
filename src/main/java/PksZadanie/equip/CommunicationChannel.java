@@ -35,18 +35,52 @@ public class CommunicationChannel {
     public void checkCompleted() {
         Integer fin = 0;
         Integer rst = 0;
+        Integer srcPsyn = 0;
+        Integer srcPfin = 0;
+        Integer open = 0;
+        Integer close = 0;
         for (Frame temp : tcpCommList) {
-            for (String flag : DataTypeHelper.getTcpPortFlags(temp)) {
-                if (flag.equalsIgnoreCase("FIN")) {
-                    fin++;
-                } else if (flag.equalsIgnoreCase("RST")) {
-                    rst++;
+            if (DataTypeHelper.getTcpPortFlags(temp).contains("SYN")) {
+                if (srcPsyn == 0) {
+                    srcPsyn = temp.getIpv4parser().getTcpParser().getSourcePort();
+               //     System.out.println("nasiel som prvy SYN");
+                } else {
+                    if (DataTypeHelper.getTcpPortFlags(temp).contains("SYN") && srcPsyn.equals(temp.getIpv4parser().getTcpParser().getDestinationPort())) {
+                        open = 1;
+             //           System.out.println("nasiel som druhy SYN");
+                    }
                 }
+            } else if (DataTypeHelper.getTcpPortFlags(temp).contains("FIN")) {
+                if (srcPfin == 0) {
+                    srcPfin = temp.getIpv4parser().getTcpParser().getSourcePort();
+           //         System.out.println("nasiel som prvy FIN");
+                } else {
+                    if (DataTypeHelper.getTcpPortFlags(temp).contains("FIN") && srcPfin.equals(temp.getIpv4parser().getTcpParser().getDestinationPort())) {
+                        close = 1;
+                    //    System.out.println("nasiel som druhy FIN");
+                    }
+                }
+            } else if (DataTypeHelper.getTcpPortFlags(temp).contains("RST")) {
+                rst++;
             }
         }
-        if (fin > 1 || rst > 0) {
+        if((open.equals(1) && close.equals(1)) || rst > 0){
             completed = 1;
         }
+            
+       
+        /*
+         for (Frame temp : tcpCommList) {
+         if (DataTypeHelper.getTcpPortFlags(temp).contains("FIN")) {
+         fin++;
+         } else if (DataTypeHelper.getTcpPortFlags(temp).contains("RST")) {
+         rst++;
+         }
+         }
+         if (fin > 1 || rst > 0) {
+         completed = 1;
+         }
+         */
     }
 
     public Integer getCommId() {

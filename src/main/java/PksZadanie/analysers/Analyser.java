@@ -52,6 +52,7 @@ public class Analyser {
     private Frame frame;
     private Integer arpFound = 0;
     private Integer icmpFound = 0;
+    private Integer usingTcp2Output = 0;
 
     public Analyser(AnalyserMainCheck aPanel, File pcapFile, AnalyserGUI gui) throws IOException {
         this.panel = aPanel;
@@ -79,6 +80,7 @@ public class Analyser {
                     i++;
                     frame = new Frame(i, packet, this);
                     frameList.add(frame);
+
                     if (frame.getIsArp()) {
                         arpFrameList.add(frame);
                         arpFound = 1;
@@ -91,6 +93,7 @@ public class Analyser {
 
                     }
                     if (frame.getIsIpv4()) {
+
                         if (frame.getIpv4parser().getIsIcmp()) {
                             icmpFound = 1;
                             icmpList.add(frame);
@@ -103,12 +106,13 @@ public class Analyser {
                                 String tcpPort = DataTypeHelper.tcpMap.get(frame.getIpv4parser().getTcpParser().getDestinationPort());
                                 if (tcpPort == null) {
                                     tcpPort = DataTypeHelper.tcpMap.get(frame.getIpv4parser().getTcpParser().getSourcePort());
-                                }
 
+                                }
                                 if (tcpPort != null) {
                                     if (tcpPort.equals("www")) {
                                         tcpPort = "http";
                                     }
+
                                     frame.setApplicationProtocol(tcpPort);
                                     if (tcpCommunicationHelper.contains(tcpPort) == false) {
                                         TcpCommunication newCommunication = new TcpCommunication(frame);
@@ -207,6 +211,8 @@ public class Analyser {
                 }
                 i++;
             }
+            arpPanel.getjTable1().setDefaultRenderer(Integer.class, centerTable);
+             arpPanel.getjTable1().setDefaultRenderer(String.class, centerTable);
         }
 
         if (icmpFound == 1 && icmpPanel == null) {
@@ -218,7 +224,8 @@ public class Analyser {
             }
         }
         for (TcpCommunication temp : tcpCommunicationList) {
-            setUpTcpTable(temp);
+            // setUpTcpTable(temp);
+            setUpTcpTable2(temp);
         }
         for (UdpCommunication temp : udpCommunicationList) {
             setUpUdpTable(temp);
@@ -233,6 +240,10 @@ public class Analyser {
                 i++;
                 fillUdpTable(temp, i, communication);
             }
+            DefaultTableCellRenderer centerTable = new DefaultTableCellRenderer();
+            centerTable.setHorizontalAlignment(JLabel.CENTER);
+            communication.getPanel().getUdpMainTable().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getUdpMainTable().setDefaultRenderer(String.class, centerTable);
         }
     }
 
@@ -330,7 +341,29 @@ public class Analyser {
         }
     }
 
+    public void setUpTcpTable2(TcpCommunication communication) {
+        usingTcp2Output = 1;
+        if ((communication.getFound() == 1) && communication.getPanel() == null) {
+            for (CommunicationChannel temp : communication.getComList()) {
+                temp.checkCompleted();
+            }
+            communication.setPanel(new AnalyserTcpParserPanel(this, communication));
+            for (CommunicationChannel temp : communication.getComList()) {
+                fillTcpTable(temp.getTcpCommList().get(0), temp.getTcpCommList().get(0).getComId(), communication.getPanel(), communication);
+            }
+            DefaultTableCellRenderer centerTable = new DefaultTableCellRenderer();
+            centerTable.setHorizontalAlignment(JLabel.CENTER);
+            communication.getPanel().getTcpMainTable().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getjTable2().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getjTable3().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getTcpMainTable().setDefaultRenderer(String.class, centerTable);
+            communication.getPanel().getjTable2().setDefaultRenderer(String.class, centerTable);
+            communication.getPanel().getjTable3().setDefaultRenderer(String.class, centerTable);
+        }
+    }
+
     public void setUpTcpTable(TcpCommunication communication) {
+        usingTcp2Output = 0;
         if ((communication.getFound() == 1) && communication.getPanel() == null) {
             for (CommunicationChannel temp : communication.getComList()) {
                 temp.checkCompleted();
@@ -341,6 +374,14 @@ public class Analyser {
                 i++;
                 fillTcpTable(temp, i, communication.getPanel(), communication);
             }
+            DefaultTableCellRenderer centerTable = new DefaultTableCellRenderer();
+            centerTable.setHorizontalAlignment(JLabel.CENTER);
+            communication.getPanel().getTcpMainTable().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getjTable2().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getjTable3().setDefaultRenderer(Integer.class, centerTable);
+            communication.getPanel().getTcpMainTable().setDefaultRenderer(String.class, centerTable);
+            communication.getPanel().getjTable2().setDefaultRenderer(String.class, centerTable);
+            communication.getPanel().getjTable3().setDefaultRenderer(String.class, centerTable);
         }
     }
 
@@ -405,6 +446,10 @@ public class Analyser {
 
     public File getPcap() {
         return pcap;
+    }
+
+    public Integer getUsingTcp2Output() {
+        return usingTcp2Output;
     }
 
 }

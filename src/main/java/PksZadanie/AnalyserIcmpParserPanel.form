@@ -120,7 +120,7 @@
                 <Column editable="false" title="Original packet length" type="java.lang.Integer"/>
                 <Column editable="false" title="Packet length on wire" type="java.lang.Integer"/>
                 <Column editable="false" title="IPv4 length" type="java.lang.Integer"/>
-                <Column editable="false" title="ICMP code" type="java.lang.Integer"/>
+                <Column editable="false" title="ICMP type" type="java.lang.Integer"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
