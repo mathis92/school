@@ -394,8 +394,8 @@ public class Analyser {
 
         Object[] data = new Object[9];
 
-        data[0] = i;
-        data[1] = temp.getComId();
+        data[0] = i +1;
+        data[1] = temp.getComId() +1;
         data[2] = temp.getProtocol();
         data[3] = temp.getIpv4parser().getSourceIP();
         Integer sPort = DataTypeHelper.toInt(temp.getIpv4parser().getTcpParser().getSourcePortByte());

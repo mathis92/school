@@ -23,7 +23,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
 
     private Analyser an;
     private ArrayList<Frame> typeList;
-   
+
     private TcpCommunication comm;
 
     public AnalyserTcpParserPanel(Analyser an, TcpCommunication comm) {
@@ -48,6 +48,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        closingTypeLabel = new javax.swing.JLabel();
         jDialog2 = new javax.swing.JDialog();
         jScrollPane4 = new javax.swing.JScrollPane();
         jDataText = new javax.swing.JTextArea();
@@ -118,13 +119,19 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable3);
 
+        closingTypeLabel.setText("jLabel1");
+
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
         jDialog1Layout.setHorizontalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
+                    .addGroup(jDialog1Layout.createSequentialGroup()
+                        .addComponent(closingTypeLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jDialog1Layout.createSequentialGroup()
@@ -135,7 +142,9 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
-                .addContainerGap(457, Short.MAX_VALUE)
+                .addContainerGap(425, Short.MAX_VALUE)
+                .addComponent(closingTypeLabel)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,28 +253,33 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
     private void tcpMainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tcpMainTableMouseClicked
         jDialog1.setVisible(true);
         jDialog1.setSize(1350, 650);
-        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (tcpMainTable.getSelectedRow() + 1));
+        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " communication no. " + (tcpMainTable.getSelectedRow() + 1));
         DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
         tableModel.setRowCount(0);
         DefaultTableModel tableModel1 = (DefaultTableModel) jTable3.getModel();
         tableModel1.setRowCount(0);
         if (an.getUsingTcp2Output().equals(0)) {
             TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(typeList.get(tcpMainTable.getSelectedRow()), this);
+            closingTypeLabel.setVisible(false);
         } else if (an.getUsingTcp2Output().equals(1)) {
             TcpCommunicationDataUpdater communicationSetter = new TcpCommunicationDataUpdater(comm.getComList().get(tcpMainTable.getSelectedRow()).getTcpCommList().get(0), this);
+            closingTypeLabel.setText(comm.getComList().get(tcpMainTable.getSelectedRow()).getClosingType());
         }
+
     }//GEN-LAST:event_tcpMainTableMouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         jDialog2.setVisible(true);
         jDialog2.setSize(950, 650);
         jDialog2.setAlwaysOnTop(true);
-        jDialog2.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (jTable2.getSelectedRow() + 1));
+
         if (an.getUsingTcp2Output().equals(0)) {
             TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(typeList.get(tcpMainTable.getSelectedRow()).getComId()).getTcpCommList().get(jTable2.getSelectedRow()), this);
+            jDialog2.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (comm.getComList().get(typeList.get(tcpMainTable.getSelectedRow()).getComId()).getTcpCommList().get(jTable2.getSelectedRow()).getId()));
             dataSetter.update();
         } else if (an.getUsingTcp2Output().equals(1)) {
             TcpParserDataUpdater dataSetter = new TcpParserDataUpdater((Frame) comm.getComList().get(tcpMainTable.getSelectedRow()).getTcpCommList().get(jTable2.getSelectedRow()), this);
+            jDialog2.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (comm.getComList().get(tcpMainTable.getSelectedRow()).getTcpCommList().get(jTable2.getSelectedRow()).getId()));
             dataSetter.update();
         }
 
@@ -297,6 +311,7 @@ public class AnalyserTcpParserPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel closingTypeLabel;
     private javax.swing.JTextArea jDataText;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialog2;

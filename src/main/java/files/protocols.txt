@@ -5,7 +5,7 @@
 4    /IPv4/            IPv4 encapsulation                           [RFC2003]
 5    /ST/              Stream                                       [RFC1190][RFC1819]
 6    /TCP/             Transmission Control                         [RFC793]
-7    /CBT             CBT                                          [Tony_Ballardie]
+7    /CBT/            CBT                                          [Tony_Ballardie]
 8    /EGP          /   Exterior Gateway Protocol                    [RFC888][David_Mills]
 9    /IGP           /  (used by Cisco for their                     [Internet_Assigned_Numbers_Authority]
 10   /BBN-RCC-MON    / BBN RCC Monitoring                           [Steve_Chipman]
