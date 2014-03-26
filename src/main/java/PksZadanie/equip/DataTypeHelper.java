@@ -28,7 +28,9 @@ public class DataTypeHelper {
 
     public static Map<Integer, String> tcpMap;
     public static Map<Integer, String> udpMap;
+    public static Map<Integer, String> portMap;
     public static String portFilePath = null;
+    public static ArrayList<String> otherPorts = new ArrayList<>();
 
     //  public byte[] byteArray;
     //  public byte singleByte;
@@ -59,45 +61,6 @@ public class DataTypeHelper {
         output = out + " " + units[i - 1];// + "( " + out2 + " B )";
 
         return output;
-    }
-
-    public static void scanFile() throws FileNotFoundException, IOException {
-        System.out.println("naskenoval som subor");
-        try {
-            try {
-                FileInputStream fis = null;
-                BufferedReader reader = null;
-                tcpMap = new HashMap<>();
-                udpMap = new HashMap<>();
-
-                fis = new FileInputStream(portFilePath);
-                reader = new BufferedReader(new InputStreamReader(fis));
-                String line = reader.readLine();
-                while (line != null) {
-                    if (line != null) {
-                        line = line.replaceAll("\t", " ").replaceAll("  ", " ");
-                        String[] protocolName = line.split(" ");
-                        String[] protocolCode = protocolName[1].split("/");
-                      //  System.out.println(protocolName[0] + " -> " + protocolCode[0] + " -> " + protocolCode[1]);
-                        if (protocolCode[1].toString().equalsIgnoreCase("udp")) {
-                            udpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
-
-                        } else if (protocolCode[1].toString().equalsIgnoreCase("tcp")) {
-                            tcpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
-
-                        }
-                    }
-                    line = reader.readLine();
-                }
-                fis.close();
-                reader.close();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     public static Integer singleToInt(byte singleByte) {
@@ -207,6 +170,85 @@ public class DataTypeHelper {
         return flags;
     }
 
+    public static void scanProtocolFile() {
+        try {
+            try {
+                FileInputStream fis = null;
+                BufferedReader reader = null;
+                portMap = new HashMap<>();
+                fis = new FileInputStream("F:\\Moje dokumenty\\Martin HUdec\\škola\\FIIT\\4. sem\\PKS\\pkspkspks\\src\\main\\java\\files\\protocols.txt");
+                reader = new BufferedReader(new InputStreamReader(fis));
+                String line = reader.readLine();
+                while (line != null) {
+                    if (line != null) {
+                        line = line.replaceAll(" ", "");
+                        String[] protocolName = line.split("/");
+                        // System.out.println(protocolName[0] + "->" + protocolName[1]);
+                        portMap.put(Integer.parseInt(protocolName[0]), protocolName[1]);
+                    }
+                    line = reader.readLine();
+                }
+                fis.close();
+                reader.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void scanFile() throws FileNotFoundException, IOException {
+        try {
+            try {
+                FileInputStream fis = null;
+                BufferedReader reader = null;
+                tcpMap = new HashMap<>();
+                udpMap = new HashMap<>();
+
+                fis = new FileInputStream(portFilePath);
+                reader = new BufferedReader(new InputStreamReader(fis));
+                String line = reader.readLine();
+                while (line != null) {
+                    if (line != null) {
+                        line = line.replaceAll("\t", " ").replaceAll("  ", " ");
+                        String[] protocolName = line.split(" ");
+                        String[] protocolCode = protocolName[1].split("/");
+                        //  System.out.println(protocolName[0] + " -> " + protocolCode[0] + " -> " + protocolCode[1]);
+                        if (protocolCode[1].toString().equalsIgnoreCase("udp")) {
+                            udpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+
+                        } else if (protocolCode[1].toString().equalsIgnoreCase("tcp")) {
+                            tcpMap.put(Integer.parseInt(protocolCode[0]), protocolName[0]);
+
+                        }
+                    }
+                    line = reader.readLine();
+                }
+                fis.close();
+                reader.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Analyser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+public static String getStringFromArray(){
+    String output = null;
+    if(otherPorts.isEmpty()){
+        output = " -- ";
+    }
+   for(String temp: otherPorts){
+       if(output == null){
+           output = temp;
+       }
+       else output += ", " + temp;
+   } 
+   
+    return output;
+}
     public static String getIcmpType(Integer type) throws FileNotFoundException {
         String typeMessage = null;
         try {

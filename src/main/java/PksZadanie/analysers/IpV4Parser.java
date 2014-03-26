@@ -6,6 +6,7 @@
 package PksZadanie.analysers;
 
 import PksZadanie.equip.DataTypeHelper;
+import java.util.ArrayList;
 import org.krakenapps.pcap.util.Buffer;
 
 /**
@@ -23,13 +24,16 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
     private Integer ihl;
     private IcmpParser icmpParser;
     private byte ipv4Protocol;
+    private String ipv4ProtocolName;
     private boolean isIcmp;
     private boolean isTcp;
     private boolean isUdp;
     private UdpParser udpParser = null;
     private TcpParser tcpParser = null;
+ 
 
     public IpV4Parser(Buffer buffer) {
+        
         super(buffer);
     }
 
@@ -49,6 +53,7 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
         ipV4theMostSentBytes = ipV4length + 14;
         buffer.skip(5);
         ipv4Protocol = buffer.get();
+        ipv4ProtocolName = DataTypeHelper.portMap.get(DataTypeHelper.singleToInt(ipv4Protocol));
         buffer.skip(2);
         for (int i = 0; i < 4; i++) {
             sourceIPbyte[i] = buffer.get();
@@ -85,18 +90,22 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
             buffer.skip(ihl - 20);
         }
 
-        if (ipv4Protocol == 0x01) {
+        if (ipv4ProtocolName.equalsIgnoreCase("ICMP")) {
             isIcmp = true;
             icmpParser = new IcmpParser(buffer);
-        }
-        if (ipv4Protocol == 0x06) {
+        } 
+        else if (ipv4ProtocolName.equalsIgnoreCase("TCP")) {
             isTcp = true;
-            
+
             tcpParser = new TcpParser(buffer);
-        }
-        if(ipv4Protocol == 0x11){
+        } 
+        else if (ipv4ProtocolName.equalsIgnoreCase("UDP")) {
             isUdp = true;
             udpParser = new UdpParser(buffer);
+        } else {
+            if(DataTypeHelper.otherPorts.contains(ipv4ProtocolName) == false){
+            DataTypeHelper.otherPorts.add(ipv4ProtocolName);
+            }
         }
     }
 
@@ -115,7 +124,7 @@ public class IpV4Parser extends AbstractAnalyser implements IAnalyser {
     public UdpParser getUdpParser() {
         return udpParser;
     }
-    
+
     public boolean isIsUdp() {
         return isUdp;
     }

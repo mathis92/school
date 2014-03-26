@@ -69,7 +69,6 @@ public final class Frame {
                 ipv4.analyse();
             }
             else if (etherTypeInt == 2054) {
-                System.out.println("som tu ");
                 isARP = true;
                 arp = new ArpParser(buffer);
                 arp.analyse();

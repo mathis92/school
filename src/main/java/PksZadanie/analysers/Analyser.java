@@ -58,6 +58,7 @@ public class Analyser {
         this.panel = aPanel;
         this.pcap = pcapFile;
         DataTypeHelper.scanFile();
+        DataTypeHelper.scanProtocolFile();
 
     }
 
@@ -198,6 +199,7 @@ public class Analyser {
         findTheMostBytesSent();
         result.getjSourceIpAdress().setText(theMostFrequentSourceIpAdress);
         result.getjByteCount().setText(theMostBytes.toString() + " B");
+        result.getjLabel3().setText(DataTypeHelper.getStringFromArray());
 
         if (arpFound == 1 && arpPanel == null) {
             arpPanel = new AnalyserArpParserPanel(this);

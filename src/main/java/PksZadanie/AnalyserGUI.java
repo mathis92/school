@@ -147,6 +147,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
         jDialog1.setSize(200, 200);
         jDialog1.setTitle("Loading File ....");
         jLabel1.setVisible(true);
+        DataTypeHelper.otherPorts.clear();
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setFileFilter(new FileNameExtensionFilter("only .pcap", "pcap"));
@@ -258,6 +259,7 @@ public class AnalyserGUI extends javax.swing.JFrame {
         udpTabHelper.clear();
         tcpTabs.clear();
         udpTabs.clear();
+
         panel.getAn().getIcmpList().clear();
         panel.getAn().getArpFrameList().clear();
         panel.getAn().getFrameList().clear();

@@ -36,6 +36,8 @@ public class AnalyserMainCheckResult extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jSourceIpAdress = new javax.swing.JLabel();
         jByteCount = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(940, 530));
         setPreferredSize(new java.awt.Dimension(940, 530));
@@ -64,6 +66,10 @@ public class AnalyserMainCheckResult extends javax.swing.JPanel {
 
         jByteCount.setText("jLabel2");
 
+        jLabel2.setText("Boli nájdené aj iné protokoly na ipv4 vrstve, ktoré niesu analyzované:");
+
+        jLabel3.setText("jLabel3");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,7 +85,11 @@ public class AnalyserMainCheckResult extends javax.swing.JPanel {
                                 .addComponent(jSourceIpAdress)
                                 .addGap(127, 127, 127)
                                 .addComponent(jByteCount)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(316, 316, 316)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 30, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -88,11 +98,14 @@ public class AnalyserMainCheckResult extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSourceIpAdress)
-                    .addComponent(jByteCount))
+                    .addComponent(jByteCount)
+                    .addComponent(jLabel3))
                 .addGap(28, 28, 28))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -109,12 +122,18 @@ public class AnalyserMainCheckResult extends javax.swing.JPanel {
         return jByteCount;
     }
 
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+    
 
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jByteCount;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jSourceIpAdress;
     private javax.swing.JTable jTable1;
