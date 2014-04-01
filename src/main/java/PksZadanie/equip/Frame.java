@@ -77,12 +77,14 @@ public final class Frame {
         }
         if (etherTypeInt <= 1500) {
             byte temp = buffer.get();
-            if (temp == 0xff) {
-                if (buffer.get() == 0xff) {
+            if ((temp & 0xff) == 0xFF) {
+                byte temp2 = buffer.get();
+                if ((temp2 & 0xff) == 0xFF) {
                     frameType = "Novell raw IEEE 802.3";
                 }
-            } else if (temp == 0xaa) {
-                if (buffer.get() == 0xaa) {
+            } else if ((temp & 0xff) == 0xAA) {
+                    byte temp2 = buffer.get();
+                if ((temp2 & 0xff) == 0xAA) {
                     frameType = "IEEE 802.2 SNAP";
                 }
             } else {

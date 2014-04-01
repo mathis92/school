@@ -140,7 +140,7 @@ this.comm = communication;
     private void udpMainTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_udpMainTableMouseClicked
         jDialog1.setVisible(true);
         jDialog1.setSize(800, 600);
-        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (udpMainTable.getSelectedRow() + 1));
+        jDialog1.setTitle("data from " + an.getPcap().getAbsolutePath() + " frame no. " + (comm.getList().get(udpMainTable.getSelectedRow()).getId()));
         UdpParserDataUpdater communicationSetter = new UdpParserDataUpdater(comm.getList().get(udpMainTable.getSelectedRow()), this);
         communicationSetter.update();
     }//GEN-LAST:event_udpMainTableMouseClicked
